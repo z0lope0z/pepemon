@@ -7,6 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -41,7 +45,7 @@ public class MainActivity extends Activity {
         /*
          * Get existing access_token if any
          */
-        mPrefs = getPreferences(MODE_PRIVATE);
+        mPrefs = this.getSharedPreferences("com.lopefied.pepemon", MODE_WORLD_READABLE);
         String accessToken = mPrefs.getString("access_token", null);
         System.out.println("Access token : " + accessToken);
         long expires = mPrefs.getLong("access_expires", 0);
@@ -91,7 +95,7 @@ public class MainActivity extends Activity {
 
     private void downloadAlbum(final String accessToken) {
         String URL = "https://graph.facebook.com/pepemon2/albums&access_token="
-                + accessToken + "?limit=10";
+                + accessToken + "?limit=20";
         final ProgressDialog progressDialog = new ProgressDialog(this);
         IAlbumDownloader albumDownloaderListener = new IAlbumDownloader() {
 
@@ -132,10 +136,29 @@ public class MainActivity extends Activity {
             public String getFBToken() {
                 return accessToken;
             }
+
+            @Override
+            public void selected(Album album) {
+                launchAlbumPhotoList(album.getAlbumID());
+            }
         };
-        AlbumListAdapter adapter = new AlbumListAdapter(this, R.layout.item_album,
-                albumList, albumListListener);
+        final AlbumListAdapter adapter = new AlbumListAdapter(this,
+                R.layout.item_album, albumList, albumListListener);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                    int position, long arg3) {
+                launchAlbumPhotoList(adapter.getItem(position).getAlbumID());
+            }
+        });
+    }
+
+    public void launchAlbumPhotoList(String albumID) {
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), AlbumPhotosActivity.class);
+        intent.putExtra(AlbumPhotosActivity.ALBUM_ID, albumID);
+        startActivity(intent);
     }
 
     @Override

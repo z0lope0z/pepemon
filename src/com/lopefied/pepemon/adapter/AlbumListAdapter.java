@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -20,11 +21,11 @@ import com.lopefied.pepemon.util.ImageLoader;
  * @author Lope Chupijay Emano
  */
 public class AlbumListAdapter extends ArrayAdapter<Album> {
-    public static final String TAG = "ShowFeedListAdapter";
+    public static final String TAG = AlbumListAdapter.class.getSimpleName();
     private ImageLoader imageLoader;
     private List<Album> albumList = new ArrayList<Album>();
     private Context mContext;
-    private IAlbumListAdapter albumListAdapter;
+    private IAlbumListAdapter albumListAdapterListener;
 
     public AlbumListAdapter(Context context, int textViewResourceId,
             List<Album> albumList, IAlbumListAdapter albumListAdapter) {
@@ -32,7 +33,7 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         this.mContext = context;
         this.albumList = albumList;
         this.imageLoader = new ImageLoader(context);
-        this.albumListAdapter = albumListAdapter;
+        this.albumListAdapterListener = albumListAdapter;
     }
 
     public void clearCache() {
@@ -64,10 +65,15 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         }
         ImageView imgProductThumbnail = (ImageView) row
                 .findViewById(R.id.imageView);
-        Album feed = getItem(position);
-        String fbURL = FBUtil.generateImageURL(feed.getAlbumCover(),
-                albumListAdapter.getFBToken());
-        imageLoader.displayImage(feed.getAlbumCover(), imgProductThumbnail);
+        final Album album = getItem(position);
+        imageLoader.displayImage(album.getAlbumCover(), imgProductThumbnail);
+
+        imgProductThumbnail.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                albumListAdapterListener.selected(album);
+            }
+        });
         return row;
     }
 
@@ -78,6 +84,8 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
 
     public interface IAlbumListAdapter {
         public String getFBToken();
+
+        public void selected(Album album);
     }
 
 }

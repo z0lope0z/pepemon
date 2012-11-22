@@ -70,31 +70,6 @@ public class GetAlbumsTask extends AsyncTask<String, Void, List<Album>> {
                     albumDownloader.noMoreAlbums();
 
                 } else {
-                    // PAGING JSONOBJECT
-                    if (JOTemp.has("paging")) {
-                        JSONObject JOPaging = JOTemp.getJSONObject("paging");
-
-                        if (JOPaging.has("next")) {
-                            String initialpagingURL = JOPaging
-                                    .getString("next");
-
-                            String[] parts = initialpagingURL.split("limit=10");
-                            String getLimit = parts[1];
-
-                            String pagingURL = "https://graph.facebook.com/"
-                                    + PEPEMON_ID + "/albums&access_token="
-                                    + albumDownloader.getFBAccessToken()
-                                    + "?limit=10" + getLimit;
-
-                        } else {
-                            stopLoadingData = true;
-                            albumDownloader.noMoreAlbums();
-                        }
-                    } else {
-                        stopLoadingData = true;
-                        albumDownloader.noMoreAlbums();
-                    }
-
                     Album albums;
 
                     for (int i = 0; i < JAAlbums.length(); i++) {
