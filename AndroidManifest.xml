@@ -27,6 +27,10 @@
             android:name=".AlbumPhotosActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name=".ViewPhotoActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
 
 </manifest>

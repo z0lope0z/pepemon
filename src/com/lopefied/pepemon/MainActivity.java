@@ -7,12 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
@@ -111,9 +109,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void foundAlbums(List<Album> albumList) {
-                Toast.makeText(getApplicationContext(),
-                        "album list size : " + albumList.size(),
-                        Toast.LENGTH_LONG).show();
                 downloadAndDisplayPictures(albumList);
             }
         };

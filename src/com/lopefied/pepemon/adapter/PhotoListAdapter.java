@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -24,15 +25,15 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
     private ImageLoader imageLoader;
     private List<Photo> photoList = new ArrayList<Photo>();
     private Context mContext;
-    private IPhotoListAdapter albumListAdapter;
+    private IPhotoListAdapter photoListAdapterListener;
 
     public PhotoListAdapter(Context context, int textViewResourceId,
-            List<Photo> photoList, IPhotoListAdapter albumListAdapter) {
+            List<Photo> photoList, IPhotoListAdapter photoListAdapterListener) {
         super(context, textViewResourceId, photoList);
         this.mContext = context;
         this.photoList = photoList;
         this.imageLoader = new ImageLoader(context);
-        this.albumListAdapter = albumListAdapter;
+        this.photoListAdapterListener = photoListAdapterListener;
     }
 
     public void clearCache() {
@@ -64,10 +65,16 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
         }
         ImageView imgProductThumbnail = (ImageView) row
                 .findViewById(R.id.imageView);
-        Photo photo = getItem(position);
+        final Photo photo = getItem(position);
         imageLoader.displayImage(photo.getPhotoURL(), imgProductThumbnail);
         TextView lblTitle = (TextView) row.findViewById(R.id.lblTitle);
         lblTitle.setVisibility(View.GONE);
+        imgProductThumbnail.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photoListAdapterListener.selectPhoto(photo);
+            }
+        });
         return row;
     }
 
@@ -78,6 +85,8 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
 
     public interface IPhotoListAdapter {
         public String getFBToken();
+
+        public void selectPhoto(Photo photo);
     }
 
 }

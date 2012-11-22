@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,6 +100,16 @@ public class AlbumPhotosActivity extends Activity {
             @Override
             public String getFBToken() {
                 return accessToken;
+            }
+
+            @Override
+            public void selectPhoto(Photo photo) {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(),
+                        ViewPhotoActivity.class);
+                intent.putExtra(ViewPhotoActivity.PHOTO_URL,
+                        photo.getPhotoURL());
+                startActivity(intent);
             }
         };
         PhotoListAdapter adapter = new PhotoListAdapter(this,
