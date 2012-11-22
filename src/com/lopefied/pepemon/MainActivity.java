@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
 
     private void downloadAlbum(final String accessToken) {
         String URL = "https://graph.facebook.com/pepemon2/albums&access_token="
-                + accessToken + "?limit=20";
+                + accessToken + "?limit=30";
         final ProgressDialog progressDialog = new ProgressDialog(this);
         IAlbumDownloader albumDownloaderListener = new IAlbumDownloader() {
 

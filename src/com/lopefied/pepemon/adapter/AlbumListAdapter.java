@@ -11,10 +11,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.lopefied.pepemon.R;
 import com.lopefied.pepemon.model.Album;
-import com.lopefied.pepemon.util.FBUtil;
 import com.lopefied.pepemon.util.ImageLoader;
 
 /**
@@ -67,13 +67,14 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
                 .findViewById(R.id.imageView);
         final Album album = getItem(position);
         imageLoader.displayImage(album.getAlbumCover(), imgProductThumbnail);
-
         imgProductThumbnail.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 albumListAdapterListener.selected(album);
             }
         });
+        TextView lblTitle = (TextView) row.findViewById(R.id.lblTitle);
+        lblTitle.setText(album.getAlbumName());
         return row;
     }
 

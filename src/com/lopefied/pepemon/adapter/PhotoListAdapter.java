@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.lopefied.pepemon.R;
 import com.lopefied.pepemon.model.Photo;
@@ -65,6 +66,8 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
                 .findViewById(R.id.imageView);
         Photo photo = getItem(position);
         imageLoader.displayImage(photo.getPhotoURL(), imgProductThumbnail);
+        TextView lblTitle = (TextView) row.findViewById(R.id.lblTitle);
+        lblTitle.setVisibility(View.GONE);
         return row;
     }
 
