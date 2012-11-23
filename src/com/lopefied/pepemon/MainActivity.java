@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
                     editor.putLong("access_expires",
                             facebook.getAccessExpires());
                     editor.commit();
+                    downloadAlbum(facebook.getAccessToken());
                 }
 
                 @Override

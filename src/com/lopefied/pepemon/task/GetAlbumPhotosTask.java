@@ -58,7 +58,7 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
             String queryAlbumPhotos = "";
 
             String query = "SELECT pid,src_big,images FROM photo WHERE aid=\""
-                    + albumID + "\" ORDER BY created DESC LIMIT "
+                    + albumID + "\" LIMIT "
                     + createLimit();
             Log.i(TAG, "Query dump : " + query);
             Bundle b = new Bundle();
