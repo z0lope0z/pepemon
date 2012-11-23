@@ -38,7 +38,6 @@ public class FBUtil {
         b.putString("q", query);
         try {
             result = Util.openUrl("https://graph.facebook.com/fql", "GET", b);
-            Log.i("FQL Loader", result);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

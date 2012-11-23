@@ -40,6 +40,11 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
         imageLoader.clearCache();
     }
 
+    @Override
+    public void clear() {
+        photoList.clear();
+    }
+
     public void addAll(Collection<? extends Photo> collection) {
         photoList.addAll(collection);
     }

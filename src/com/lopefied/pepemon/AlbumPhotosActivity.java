@@ -50,7 +50,6 @@ public class AlbumPhotosActivity extends Activity {
         if (extras != null) {
             albumID = extras.getString(ALBUM_ID);
             Log.i(TAG, "Got albumID : " + albumID);
-
             /*
              * Get existing access_token if any
              */
@@ -111,9 +110,9 @@ public class AlbumPhotosActivity extends Activity {
                         if (photo != null) {
                             if (!isDownloadingStuff) {
                                 downloadAlbumPhotos(accessToken, albumID,
-                                        currentPage += 5);
+                                        currentPage += 11);
                                 Toast.makeText(getApplicationContext(),
-                                        "loading more items..",
+                                        "Loading more items..",
                                         Toast.LENGTH_LONG).show();
                             }
                         }
@@ -164,6 +163,7 @@ public class AlbumPhotosActivity extends Activity {
     }
 
     private void downloadAndDisplayPictures(List<Photo> photoList) {
+        adapter.getList();
         adapter.addAll(photoList);
         adapter.notifyDataSetChanged();
     }

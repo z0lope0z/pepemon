@@ -45,7 +45,7 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
     }
 
     private String createLimit() {
-        return page + "," + (page + 10);
+        return page + "," + 10;
     }
 
     @Override
