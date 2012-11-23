@@ -1,0 +1,21 @@
+SELECT pid, created, src_big FROM photo WHERE aid="253903274621452_75380" ORDER BY created DESC LIMIT 5,10
+
+SELECT page_id from page where username="Pepemon2"
+
+SELECT pid,src_big FROM photo WHERE owner="379576522102239" ORDER BY created ASC LIMIT 0,5
+
+SELECT aid, name FROM album WHERE owner="379576522102239"
+
+    {
+      "aid": "379576522102239_92065",
+      "name": "Timeline Photos"
+    }
+
+SELECT pid,src_big FROM photo WHERE owner="379576522102239" AND aid="379576522102239_92065" ORDER BY created DESC LIMIT 0,5
+
+SELECT aid, name, photo_count, cover_pid FROM album WHERE owner IN (SELECT page_id from page where username="pepemon3")
+
+SELECT pid,src_big,images FROM photo WHERE pid="253903274621452_1251372"
+
+jarsigner -verify -verbose com.lopefied.pepemon.MainActivity.apk
+zipalign -v 4 com.lopefied.pepemon.MainActivity.apk com.lopefied.pepemon.MainActivity-aligned.apk
