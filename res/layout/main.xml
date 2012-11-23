@@ -17,8 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
-        ads:adUnitId="AD_UNIT_ID_GOES_HERE"
-        ads:loadAdOnCreate="true"
-        ads:testDevices="TEST_EMULATOR,TEST_DEVICE_ID_GOES_HERE" />
+        ads:adUnitId="a150afa56951cf3"
+        ads:loadAdOnCreate="true" />
 
 </LinearLayout>
