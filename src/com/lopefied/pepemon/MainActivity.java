@@ -1,7 +1,5 @@
 package com.lopefied.pepemon;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import android.app.Activity;
@@ -9,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,12 +17,10 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
-import com.facebook.android.Util;
 import com.lopefied.pepemon.adapter.AlbumListAdapter;
 import com.lopefied.pepemon.adapter.AlbumListAdapter.IAlbumListAdapter;
 import com.lopefied.pepemon.model.Album;
 import com.lopefied.pepemon.task.GetAlbumsFQLTask;
-import com.lopefied.pepemon.task.GetAlbumsTask;
 import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
 
 /**
@@ -34,9 +29,9 @@ import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
  * 
  */
 public class MainActivity extends Activity {
-
     Facebook facebook = new Facebook("195085947295131");
     AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
+    private static final String FACEBOOK_ID = "pepemon3";
 
     private SharedPreferences mPrefs;
     private ListView listView;
@@ -97,8 +92,6 @@ public class MainActivity extends Activity {
     }
 
     private void downloadAlbum(final String accessToken) {
-        String URL = "https://graph.facebook.com/pepemon2/albums&access_token="
-                + accessToken + "?limit=30";
         final ProgressDialog progressDialog = new ProgressDialog(this);
         IAlbumDownloader albumDownloaderListener = new IAlbumDownloader() {
 
@@ -125,7 +118,7 @@ public class MainActivity extends Activity {
         progressDialog.setMax(100);
         GetAlbumsFQLTask task = new GetAlbumsFQLTask(albumDownloaderListener,
                 progressDialog, accessToken);
-        task.execute(URL);
+        task.execute(FACEBOOK_ID);
     }
 
     private void downloadAndDisplayPictures(List<Album> albumList) {

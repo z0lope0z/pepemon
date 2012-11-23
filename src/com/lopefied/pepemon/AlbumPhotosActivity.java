@@ -19,6 +19,7 @@ import com.lopefied.pepemon.adapter.PhotoListAdapter.IPhotoListAdapter;
 import com.lopefied.pepemon.model.Photo;
 import com.lopefied.pepemon.task.GetAlbumPhotosTask;
 import com.lopefied.pepemon.task.GetAlbumPhotosTask.IAlbumPhotosDownloader;
+import com.lopefied.pepemon.task.GetAlbumsTask;
 
 /**
  * 
@@ -109,8 +110,10 @@ public class AlbumPhotosActivity extends Activity {
                                 totalItemCount - 1);
                         if (photo != null) {
                             if (!isDownloadingStuff) {
+                                currentPage = currentPage
+                                        + (GetAlbumPhotosTask.PAGE_COUNT + 1);
                                 downloadAlbumPhotos(accessToken, albumID,
-                                        currentPage += 11);
+                                        currentPage);
                                 Toast.makeText(getApplicationContext(),
                                         "Loading more items..",
                                         Toast.LENGTH_LONG).show();

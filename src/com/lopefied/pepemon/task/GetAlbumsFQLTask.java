@@ -55,11 +55,12 @@ public class GetAlbumsFQLTask extends AsyncTask<String, Void, List<Album>> {
         loadingMore = true;
 
         // SET THE INITIAL URL TO GET THE FIRST LOT OF ALBUMS
-        String URL = params[0];
+        String FACEBOOK_ID = params[0];
         try {
             String queryAlbums = "";
 
-            String query = "SELECT aid, name, photo_count, cover_pid FROM album WHERE owner IN (SELECT page_id from page where username=\"pepemon3\")";
+            String query = "SELECT aid, name, photo_count, cover_pid FROM album WHERE owner IN (SELECT page_id from page where username=\""
+                    + FACEBOOK_ID + "\")";
             Bundle b = new Bundle();
             b.putString("access_token", accessToken);
             b.putString("q", query);

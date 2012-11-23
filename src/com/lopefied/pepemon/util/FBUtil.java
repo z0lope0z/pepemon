@@ -45,7 +45,7 @@ public class FBUtil {
         }
         try {
             returnImageURL = FBParseUtils.extractURL(result);
-            Log.i(TAG, "extracted url : " + returnImageURL);
+            Log.i(TAG, "extracted url from pid: " + returnImageURL);
         } catch (JSONException e) {
             e.printStackTrace();
         }
