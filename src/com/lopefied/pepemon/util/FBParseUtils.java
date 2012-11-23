@@ -38,4 +38,28 @@ public class FBParseUtils {
         }
         return returnURL;
     }
+
+    public static String extractURLFromImageObject(JSONObject pictureJSON)
+            throws JSONException {
+        String returnURL = null;
+        if (pictureJSON.has("images")) {
+            // GET THE PHOTO ARRAY
+            JSONArray JAPhotoSizes = pictureJSON.getJSONArray("images");
+            for (int j = 0; j < JAPhotoSizes.length(); j++) {
+                JSONObject photoJSON = JAPhotoSizes.getJSONObject(j);
+                if ((photoJSON.has("height")) && photoJSON.has("width")) {
+                    if ((photoJSON.getInt("height") > 300)
+                            && (photoJSON.getInt("height") < 1000)) {
+                        returnURL = photoJSON.getString("source");
+                        Log.i(TAG,
+                                "saving photo with url : " + returnURL
+                                        + " using height : "
+                                        + photoJSON.getInt("height"));
+                        return returnURL;
+                    }
+                }
+            }
+        }
+        return returnURL;
+    }
 }

@@ -1,21 +1,21 @@
 package com.lopefied.pepemon.task;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 
+import com.facebook.android.Util;
 import com.lopefied.pepemon.model.Photo;
+import com.lopefied.pepemon.util.FBParseUtils;
 
 /**
  * 
@@ -23,15 +23,19 @@ import com.lopefied.pepemon.model.Photo;
  * 
  */
 public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
-    public static final String PEPEMON_ID = "pepemon2";
+    public static final String TAG = GetAlbumPhotosTask.class.getSimpleName();
 
     private ProgressDialog progressDialog;
     private IAlbumPhotosDownloader albumPhotosDownloader;
+    private String accessToken;
+    private Integer page;
 
     public GetAlbumPhotosTask(IAlbumPhotosDownloader albumPhotosDownloader,
-            ProgressDialog progressDialog) {
+            ProgressDialog progressDialog, String accessToken, Integer page) {
         this.albumPhotosDownloader = albumPhotosDownloader;
         this.progressDialog = progressDialog;
+        this.accessToken = accessToken;
+        this.page = page;
     }
 
     @Override
@@ -40,65 +44,58 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
         progressDialog.show();
     }
 
+    private String createLimit() {
+        return page + "," + (page + 10);
+    }
+
     @Override
-    protected List<Photo> doInBackground(String... params) {
+    protected List<Photo> doInBackground(String... albumIDs) {
         List<Photo> albumPhotoList = new ArrayList<Photo>();
 
         // SET THE INITIAL URL TO GET THE FIRST LOT OF ALBUMS
-        String URL = params[0];
+        String albumID = albumIDs[0];
         try {
+            String queryAlbumPhotos = "";
 
-            HttpClient hc = new DefaultHttpClient();
-            HttpGet get = new HttpGet(URL);
-            HttpResponse rp = hc.execute(get);
+            String query = "SELECT pid,src_big,images FROM photo WHERE aid=\""
+                    + albumID + "\" ORDER BY created DESC LIMIT "
+                    + createLimit();
+            Log.i(TAG, "Query dump : " + query);
+            Bundle b = new Bundle();
+            b.putString("access_token", accessToken);
+            b.putString("q", query);
 
-            if (rp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                String queryAlbums = EntityUtils.toString(rp.getEntity());
+            try {
+                queryAlbumPhotos = Util.openUrl(
+                        "https://graph.facebook.com/fql", "GET", b);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                JSONObject JOTemp = new JSONObject(queryAlbums);
+            JSONObject JOTemp = new JSONObject(queryAlbumPhotos);
 
-                JSONArray JAAlbums = JOTemp.getJSONArray("data");
+            JSONArray JAAlbumPhotos = JOTemp.getJSONArray("data");
 
-                if (JAAlbums.length() == 0) {
-                    albumPhotosDownloader.noMoreAlbumPhotos();
-
-                } else {
-                    // PAGING JSONOBJECT
-                    Photo photo;
-
-                    for (int i = 0; i < JAAlbums.length(); i++) {
-                        JSONObject JOPhoto = JAAlbums.getJSONObject(i);
-                        if (JOPhoto.has("picture")) {
-                            photo = new Photo();
-                            // GET THE ALBUM ID
-                            if (JOPhoto.has("id")) {
-                                photo.setPhotoID(JOPhoto.getString("id"));
-                            } else {
-                                photo.setPhotoID(null);
-                            }
-                            if (JOPhoto.has("images")) {
-                                // GET THE PHOTO ARRAY
-                                JSONArray JAPhotoSizes = JOPhoto
-                                        .getJSONArray("images");
-                                for (int j = 0; j < JAPhotoSizes.length(); j++) {
-                                    JSONObject photoJSON = JAPhotoSizes
-                                            .getJSONObject(j);
-                                    System.out.println(photoJSON.toString());
-                                    if ((photoJSON.has("height"))
-                                            && photoJSON.has("width")) {
-                                        if (photoJSON.getInt("height") > 400)
-                                            photo.setPhotoURL(photoJSON
-                                                    .getString("source"));
-                                        System.out
-                                                .println("saving photo with url : "
-                                                        + photo.getPhotoURL());
-                                        albumPhotoList.add(photo);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
+            if (JAAlbumPhotos.length() == 0) {
+                albumPhotosDownloader.noMoreAlbumPhotos();
+            } else {
+                // PAGING JSONOBJECT
+                Photo photo;
+                for (int i = 0; i < JAAlbumPhotos.length(); i++) {
+                    JSONObject JOPhoto = JAAlbumPhotos.getJSONObject(i);
+                    photo = new Photo();
+                    // GET THE ALBUM ID
+                    if (JOPhoto.has("pid")) {
+                        photo.setPhotoID(JOPhoto.getString("pid"));
+                    } else {
+                        photo.setPhotoID(null);
                     }
+                    String returnImageURL = FBParseUtils
+                            .extractURLFromImageObject(JOPhoto);
+                    photo.setPhotoURL(returnImageURL);
+                    albumPhotoList.add(photo);
                 }
             }
         } catch (Exception e) {

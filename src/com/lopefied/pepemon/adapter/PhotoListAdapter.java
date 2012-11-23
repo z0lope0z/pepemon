@@ -44,6 +44,11 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
         photoList.addAll(collection);
     }
 
+    public void set(Collection<? extends Photo> collection) {
+        photoList.clear();
+        photoList.addAll(collection);
+    }
+
     public int getCount() {
         return this.photoList.size();
     }

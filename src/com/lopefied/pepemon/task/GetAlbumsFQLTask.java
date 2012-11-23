@@ -59,7 +59,7 @@ public class GetAlbumsFQLTask extends AsyncTask<String, Void, List<Album>> {
         try {
             String queryAlbums = "";
 
-            String query = "SELECT aid, name, photo_count, cover_pid FROM album WHERE owner IN (SELECT page_id from page where username=\"Pepemon2\")";
+            String query = "SELECT aid, name, photo_count, cover_pid FROM album WHERE owner IN (SELECT page_id from page where username=\"pepemon3\")";
             Bundle b = new Bundle();
             b.putString("access_token", accessToken);
             b.putString("q", query);
@@ -69,10 +69,8 @@ public class GetAlbumsFQLTask extends AsyncTask<String, Void, List<Album>> {
                         "GET", b);
                 Log.i(TAG, queryAlbums);
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
