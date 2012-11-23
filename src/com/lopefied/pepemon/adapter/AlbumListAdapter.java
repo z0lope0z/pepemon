@@ -63,11 +63,10 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.item_album, parent, false);
         }
-        ImageView imgProductThumbnail = (ImageView) row
-                .findViewById(R.id.imageView);
+        ImageView imgAlbumCover = (ImageView) row.findViewById(R.id.imageView);
         final Album album = getItem(position);
-        imageLoader.displayImage(album.getAlbumCover(), imgProductThumbnail);
-        imgProductThumbnail.setOnClickListener(new OnClickListener() {
+        imageLoader.displayImage(album.getAlbumCover(), imgAlbumCover);
+        imgAlbumCover.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 albumListAdapterListener.selected(album);

@@ -1,5 +1,7 @@
 package com.lopefied.pepemon;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import android.app.Activity;
@@ -7,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -17,9 +20,11 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.facebook.android.Util;
 import com.lopefied.pepemon.adapter.AlbumListAdapter;
 import com.lopefied.pepemon.adapter.AlbumListAdapter.IAlbumListAdapter;
 import com.lopefied.pepemon.model.Album;
+import com.lopefied.pepemon.task.GetAlbumsFQLTask;
 import com.lopefied.pepemon.task.GetAlbumsTask;
 import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
 
@@ -118,8 +123,8 @@ public class MainActivity extends Activity {
                 .setProgressStyle(ProgressDialog.THEME_DEVICE_DEFAULT_DARK);
         progressDialog.setProgress(0);
         progressDialog.setMax(100);
-        GetAlbumsTask task = new GetAlbumsTask(albumDownloaderListener,
-                progressDialog);
+        GetAlbumsFQLTask task = new GetAlbumsFQLTask(albumDownloaderListener,
+                progressDialog, accessToken);
         task.execute(URL);
     }
 
