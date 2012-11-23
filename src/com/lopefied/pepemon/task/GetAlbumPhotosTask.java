@@ -24,7 +24,7 @@ import com.lopefied.pepemon.util.FBParseUtils;
  */
 public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
     public static final String TAG = GetAlbumPhotosTask.class.getSimpleName();
-    public static final Integer PAGE_COUNT = 5;
+    public static final Integer PAGE_COUNT = 8;
     private ProgressDialog progressDialog;
     private IAlbumPhotosDownloader albumPhotosDownloader;
     private String accessToken;

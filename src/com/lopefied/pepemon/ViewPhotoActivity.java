@@ -6,6 +6,7 @@ import com.lopefied.pepemon.widgets.TouchImageView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 
 /**
  * 
@@ -18,6 +19,7 @@ public class ViewPhotoActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_photo);
         init();
