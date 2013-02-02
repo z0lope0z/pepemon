@@ -1,13 +1,22 @@
-package com.lopefied.pepemon.model;
+package com.lopefied.pepemon.db.model;
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * 
  * @author Lope Chupijay Emano
  * 
  */
+@DatabaseTable(tableName = "photo")
 public class Photo {
-    private String photoURL;
+
+    @DatabaseField(generatedId = true)
+    private Integer ID;
+    @DatabaseField(columnName = "photo_id")
     private String photoID;
+    @DatabaseField(columnName = "photo_url")
+    private String photoURL;
 
     public Photo() {
     }
@@ -16,6 +25,14 @@ public class Photo {
         super();
         this.photoURL = photoURL;
         this.photoID = photoID;
+    }
+
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer iD) {
+        ID = iD;
     }
 
     public String getPhotoID() {

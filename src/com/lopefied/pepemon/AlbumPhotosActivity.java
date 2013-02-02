@@ -17,10 +17,9 @@ import android.widget.Toast;
 
 import com.lopefied.pepemon.adapter.PhotoListAdapter;
 import com.lopefied.pepemon.adapter.PhotoListAdapter.IPhotoListAdapter;
-import com.lopefied.pepemon.model.Photo;
+import com.lopefied.pepemon.db.model.Photo;
 import com.lopefied.pepemon.task.GetAlbumPhotosTask;
 import com.lopefied.pepemon.task.GetAlbumPhotosTask.IAlbumPhotosDownloader;
-import com.lopefied.pepemon.task.GetAlbumsTask;
 
 /**
  * 

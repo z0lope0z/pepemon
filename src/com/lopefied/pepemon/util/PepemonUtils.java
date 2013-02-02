@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.lopefied.pepemon.model.Photo;
+import com.lopefied.pepemon.db.model.Photo;
 
 /**
  * 

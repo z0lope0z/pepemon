@@ -1,5 +1,6 @@
 package com.lopefied.pepemon;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import android.app.Activity;
@@ -20,7 +21,10 @@ import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.lopefied.pepemon.adapter.AlbumListAdapter;
 import com.lopefied.pepemon.adapter.AlbumListAdapter.IAlbumListAdapter;
-import com.lopefied.pepemon.model.Album;
+import com.lopefied.pepemon.db.DBHelper;
+import com.lopefied.pepemon.db.model.Album;
+import com.lopefied.pepemon.service.AlbumService;
+import com.lopefied.pepemon.service.impl.AlbumServiceImpl;
 import com.lopefied.pepemon.task.GetAlbumsFQLTask;
 import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
 
@@ -36,16 +40,27 @@ public class MainActivity extends Activity {
 
     private SharedPreferences mPrefs;
     private ListView listView;
+    private DBHelper dbHelper;
+    private AlbumService albumService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        dbHelper = new DBHelper(this);
+        try {
+            albumService = new AlbumServiceImpl(dbHelper.getAlbumDao());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         /*
          * Get existing access_token if any
          */
-        mPrefs = this.getSharedPreferences("com.lopefied.pepemon", MODE_WORLD_READABLE);
+        mPrefs = this.getSharedPreferences("com.lopefied.pepemon",
+                MODE_WORLD_READABLE);
         String accessToken = mPrefs.getString("access_token", null);
         System.out.println("Access token : " + accessToken);
         long expires = mPrefs.getLong("access_expires", 0);
@@ -71,7 +86,7 @@ public class MainActivity extends Activity {
                     editor.putLong("access_expires",
                             facebook.getAccessExpires());
                     editor.commit();
-                    downloadAlbum(facebook.getAccessToken());
+                    loadAlbums(facebook.getAccessToken());
                 }
 
                 @Override
@@ -91,7 +106,15 @@ public class MainActivity extends Activity {
             });
         }
         if (accessToken != null)
+            loadAlbums(accessToken);
+    }
+
+    private void loadAlbums(String accessToken) {
+        if (albumService.isCached()) {
+            downloadAndDisplayPictures(albumService.getAlbums());
+        } else {
             downloadAlbum(accessToken);
+        }
     }
 
     private void downloadAlbum(final String accessToken) {
@@ -119,8 +142,8 @@ public class MainActivity extends Activity {
                 .setProgressStyle(ProgressDialog.THEME_DEVICE_DEFAULT_DARK);
         progressDialog.setProgress(0);
         progressDialog.setMax(100);
-        GetAlbumsFQLTask task = new GetAlbumsFQLTask(albumDownloaderListener,
-                progressDialog, accessToken);
+        GetAlbumsFQLTask task = new GetAlbumsFQLTask(albumService,
+                albumDownloaderListener, progressDialog, accessToken);
         task.execute(FACEBOOK_ID);
     }
 

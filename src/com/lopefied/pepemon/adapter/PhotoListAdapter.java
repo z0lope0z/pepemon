@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lopefied.pepemon.R;
-import com.lopefied.pepemon.model.Photo;
+import com.lopefied.pepemon.db.model.Photo;
 import com.lopefied.pepemon.util.ImageLoader;
 
 /**

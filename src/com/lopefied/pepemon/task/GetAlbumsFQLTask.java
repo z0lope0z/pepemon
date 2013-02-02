@@ -5,18 +5,15 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.android.Util;
-import com.lopefied.pepemon.model.Album;
+import com.lopefied.pepemon.db.model.Album;
+import com.lopefied.pepemon.service.AlbumService;
 import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
-import com.lopefied.pepemon.util.FBUtil;
 
 /**
  * 
@@ -32,12 +29,15 @@ public class GetAlbumsFQLTask extends AsyncTask<String, Void, List<Album>> {
     private Boolean stopLoadingData;
     private Boolean loadingMore;
     private String accessToken;
+    private AlbumService albumService;
 
-    public GetAlbumsFQLTask(IAlbumDownloader albumDownloader,
-            ProgressDialog progressDialog, String accessToken) {
+    public GetAlbumsFQLTask(AlbumService albumService,
+            IAlbumDownloader albumDownloader, ProgressDialog progressDialog,
+            String accessToken) {
         this.albumDownloader = albumDownloader;
         this.progressDialog = progressDialog;
         this.accessToken = accessToken;
+        this.albumService = albumService;
     }
 
     @Override
@@ -69,54 +69,13 @@ public class GetAlbumsFQLTask extends AsyncTask<String, Void, List<Album>> {
                 queryAlbums = Util.openUrl("https://graph.facebook.com/fql",
                         "GET", b);
                 Log.i(TAG, queryAlbums);
+                albumList = albumService.processJSONArrayResponse(queryAlbums,
+                        accessToken, PEPEMON_ID);
+                Log.i(TAG, "Returning album list with size : " + queryAlbums);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-            JSONObject JOTemp = new JSONObject(queryAlbums);
-
-            JSONArray JAAlbums = JOTemp.getJSONArray("data");
-
-            if (JAAlbums.length() == 0) {
-                stopLoadingData = true;
-                albumDownloader.noMoreAlbums();
-
-            } else {
-                Album albums;
-
-                for (int i = 0; i < JAAlbums.length(); i++) {
-                    JSONObject JOAlbums = JAAlbums.getJSONObject(i);
-
-                    if (JOAlbums.has("aid")) {
-                        albums = new Album();
-                        // GET THE ALBUM ID
-                        albums.setAlbumID(JOAlbums.getString("aid"));
-
-                        // GET THE ALBUM NAME
-                        if (JOAlbums.has("name")) {
-                            albums.setAlbumName(JOAlbums.getString("name"));
-                        } else {
-                            albums.setAlbumName(null);
-                        }
-
-                        // GET THE ALBUM COVER PHOTO
-                        if (JOAlbums.has("cover_pid")) {
-                            albums.setAlbumCover(FBUtil.extractImageURLFromPID(
-                                    JOAlbums.getString("cover_pid"),
-                                    accessToken));
-                        }
-                        // GET THE ALBUM'S PHOTO COUNT
-                        if (JOAlbums.has("photo_count")) {
-                            albums.setAlbumPhotoCount(JOAlbums
-                                    .getString("photo_count"));
-                        } else {
-                            albums.setAlbumPhotoCount("0");
-                        }
-                        albumList.add(albums);
-                    }
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();

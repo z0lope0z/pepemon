@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.android.Util;
-import com.lopefied.pepemon.model.Photo;
+import com.lopefied.pepemon.db.model.Photo;
 import com.lopefied.pepemon.util.FBParseUtils;
 
 /**

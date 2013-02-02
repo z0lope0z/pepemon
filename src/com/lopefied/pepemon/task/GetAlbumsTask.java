@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.lopefied.pepemon.model.Album;
+import com.lopefied.pepemon.db.model.Album;
 
 /**
  * 
