@@ -10,10 +10,10 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "album")
 public class Album {
-
+    public static final String ALBUM_ID = "album_id";
     @DatabaseField(generatedId = true)
     private Integer ID;
-    @DatabaseField(columnName = "album_id")
+    @DatabaseField(columnName = ALBUM_ID)
     private String albumID;
     @DatabaseField(columnName = "photo_count")
     private String albumPhotoCount;

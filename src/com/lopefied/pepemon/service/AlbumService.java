@@ -15,7 +15,12 @@ public interface AlbumService {
      * @return
      */
     public List<Album> processJSONArrayResponse(String response,
-            String accessToken, String facebookID) throws NoAlbumExistsException, JSONException;
+            String accessToken, String facebookID)
+            throws NoAlbumExistsException, JSONException;
+
     public Boolean isCached();
+
     public List<Album> getAlbums();
+
+    public Album getAlbum(String albumID) throws NoAlbumExistsException;
 }

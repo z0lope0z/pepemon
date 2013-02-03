@@ -10,13 +10,17 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "photo")
 public class Photo {
-
-    @DatabaseField(generatedId = true)
+    public static final String ID_PK = "ID";
+    public static final String PHOTO_ID = "photo_id";
+    public static final String ALBUM = "album";
+    @DatabaseField(columnName = ID_PK, generatedId = true)
     private Integer ID;
-    @DatabaseField(columnName = "photo_id")
+    @DatabaseField(columnName = PHOTO_ID)
     private String photoID;
     @DatabaseField(columnName = "photo_url")
     private String photoURL;
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = ALBUM)
+    private Album album;
 
     public Photo() {
     }
@@ -49,6 +53,14 @@ public class Photo {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     @Override

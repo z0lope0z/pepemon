@@ -9,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.lopefied.pepemon.db.model.Album;
 import com.lopefied.pepemon.service.AlbumService;
 import com.lopefied.pepemon.service.exception.NoAlbumExistsException;
@@ -82,7 +84,7 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Boolean isCached() {
         try {
-            if (albumDAO.countOf() > new Long(0))
+            if (albumDAO.countOf() > Long.valueOf(0))
                 return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,5 +100,18 @@ public class AlbumServiceImpl implements AlbumService {
             e.printStackTrace();
         }
         return new ArrayList<Album>();
+    }
+
+    @Override
+    public Album getAlbum(String albumID) throws NoAlbumExistsException {
+        QueryBuilder<Album, Integer> queryBuilder = albumDAO.queryBuilder();
+        try {
+            queryBuilder.where().eq(Album.ALBUM_ID, albumID);
+            PreparedQuery<Album> prepQuery = queryBuilder.prepare();
+            return albumDAO.queryForFirst(prepQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -5,8 +5,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -14,24 +13,31 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.android.Util;
+import com.lopefied.pepemon.db.model.Album;
 import com.lopefied.pepemon.db.model.Photo;
-import com.lopefied.pepemon.util.FBParseUtils;
+import com.lopefied.pepemon.provider.AlbumPhotosListener;
+import com.lopefied.pepemon.service.PhotoService;
+import com.lopefied.pepemon.service.exception.NoPhotosExistException;
 
 /**
  * 
  * @author Lope Chupijay Emano
  * 
  */
-public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
+public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
     public static final String TAG = GetAlbumPhotosTask.class.getSimpleName();
     public static final Integer PAGE_COUNT = 8;
     private ProgressDialog progressDialog;
     private IAlbumPhotosDownloader albumPhotosDownloader;
+    private AlbumPhotosListener albumPhotosListener;
     private String accessToken;
     private Integer page;
+    private PhotoService photoService;
 
-    public GetAlbumPhotosTask(IAlbumPhotosDownloader albumPhotosDownloader,
+    public GetAlbumPhotosTask(PhotoService photoService,
+            IAlbumPhotosDownloader albumPhotosDownloader,
             ProgressDialog progressDialog, String accessToken, Integer page) {
+        this.photoService = photoService;
         this.albumPhotosDownloader = albumPhotosDownloader;
         this.progressDialog = progressDialog;
         this.accessToken = accessToken;
@@ -49,17 +55,16 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
     }
 
     @Override
-    protected List<Photo> doInBackground(String... albumIDs) {
+    protected List<Photo> doInBackground(Album... albums) {
         List<Photo> albumPhotoList = new ArrayList<Photo>();
-
-        // SET THE INITIAL URL TO GET THE FIRST LOT OF ALBUMS
-        String albumID = albumIDs[0];
         try {
+            // SET THE INITIAL URL TO GET THE FIRST LOT OF ALBUMS
+            Album album = albums[0];
+            String albumID = album.getAlbumID();
             String queryAlbumPhotos = "";
 
             String query = "SELECT pid,src_big,images FROM photo WHERE aid=\""
-                    + albumID + "\" LIMIT "
-                    + createLimit();
+                    + albumID + "\" LIMIT " + createLimit();
             Log.i(TAG, "Query dump : " + query);
             Bundle b = new Bundle();
             b.putString("access_token", accessToken);
@@ -73,32 +78,13 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            JSONObject JOTemp = new JSONObject(queryAlbumPhotos);
-
-            JSONArray JAAlbumPhotos = JOTemp.getJSONArray("data");
-
-            if (JAAlbumPhotos.length() == 0) {
-                albumPhotosDownloader.noMoreAlbumPhotos();
-            } else {
-                // PAGING JSONOBJECT
-                Photo photo;
-                for (int i = 0; i < JAAlbumPhotos.length(); i++) {
-                    JSONObject JOPhoto = JAAlbumPhotos.getJSONObject(i);
-                    photo = new Photo();
-                    // GET THE ALBUM ID
-                    if (JOPhoto.has("pid")) {
-                        photo.setPhotoID(JOPhoto.getString("pid"));
-                    } else {
-                        photo.setPhotoID(null);
-                    }
-                    String returnImageURL = FBParseUtils
-                            .extractURLFromImageObject(JOPhoto);
-                    photo.setPhotoURL(returnImageURL);
-                    albumPhotoList.add(photo);
-                }
-            }
-        } catch (Exception e) {
+            photoService.processJSONArrayResponse(queryAlbumPhotos,
+                    accessToken, album);
+            return photoService.getAlbumPhotos(album);
+        } catch (NoPhotosExistException e) {
+            albumPhotosDownloader.noMoreAlbumPhotos();
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return albumPhotoList;
@@ -113,11 +99,10 @@ public class GetAlbumPhotosTask extends AsyncTask<String, Void, List<Photo>> {
     }
 
     public interface IAlbumPhotosDownloader {
-        public String getFBAccessToken();
-
         public void noMoreAlbumPhotos();
 
         public void foundAlbumPhotos(List<Photo> photoList);
+
     }
 
 }
