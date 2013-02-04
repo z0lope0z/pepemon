@@ -82,7 +82,6 @@ public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
                     accessToken, album);
             return photoService.getAlbumPhotos(album);
         } catch (NoPhotosExistException e) {
-            albumPhotosDownloader.noMoreAlbumPhotos();
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -94,8 +93,10 @@ public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
     protected void onPostExecute(List<Photo> albumPhotoList) {
         // HIDE THE PROGRESS BAR (SPINNER) AFTER LOADING ALBUMS
         progressDialog.hide();
-        albumPhotosDownloader.foundAlbumPhotos(albumPhotoList);
-        albumPhotosDownloader.noMoreAlbumPhotos();
+        if (albumPhotoList.size() > 0)
+            albumPhotosDownloader.foundAlbumPhotos(albumPhotoList);
+        else
+            albumPhotosDownloader.noMoreAlbumPhotos();
     }
 
     public interface IAlbumPhotosDownloader {
