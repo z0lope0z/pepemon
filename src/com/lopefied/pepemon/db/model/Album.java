@@ -21,6 +21,8 @@ public class Album {
     private String albumName;
     @DatabaseField(columnName = "cover_url")
     private String albumCover;
+    @DatabaseField(columnName = "photo_id")
+    private String albumPhotoID;
 
     public Album() {
     }
@@ -71,6 +73,14 @@ public class Album {
 
     public void setAlbumCover(String albumCover) {
         this.albumCover = albumCover;
+    }
+
+    public String getAlbumPhotoID() {
+        return albumPhotoID;
+    }
+
+    public void setAlbumPhotoID(String albumPhotoID) {
+        this.albumPhotoID = albumPhotoID;
     }
 
     @Override

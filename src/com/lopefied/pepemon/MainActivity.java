@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
 
     private void loadAlbums(String accessToken) {
         if (albumService.isCached()) {
-            downloadAndDisplayPictures(albumService.getAlbums());
+            downloadAndDisplayPictures(albumService.getAlbums(), accessToken);
         } else {
             downloadAlbum(accessToken);
         }
@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void foundAlbums(List<Album> albumList) {
-                downloadAndDisplayPictures(albumList);
+                downloadAndDisplayPictures(albumList, accessToken);
             }
         };
         progressDialog.setCancelable(false);
@@ -147,8 +147,8 @@ public class MainActivity extends Activity {
         task.execute(FACEBOOK_ID);
     }
 
-    private void downloadAndDisplayPictures(List<Album> albumList) {
-        final String accessToken = mPrefs.getString("access_token", null);
+    private void downloadAndDisplayPictures(List<Album> albumList,
+            final String accessToken) {
         listView = (ListView) findViewById(R.id.listView);
         IAlbumListAdapter albumListListener = new IAlbumListAdapter() {
             @Override
@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
             }
         };
         final AlbumListAdapter adapter = new AlbumListAdapter(this,
-                R.layout.item_album, albumList, albumListListener);
+                R.layout.item_album, albumList, albumListListener, accessToken);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override

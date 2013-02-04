@@ -15,24 +15,24 @@ import android.widget.TextView;
 
 import com.lopefied.pepemon.R;
 import com.lopefied.pepemon.db.model.Album;
-import com.lopefied.pepemon.util.ImageLoader;
+import com.lopefied.pepemon.util.FacebookImageLoader;
 
 /**
  * @author Lope Chupijay Emano
  */
 public class AlbumListAdapter extends ArrayAdapter<Album> {
     public static final String TAG = AlbumListAdapter.class.getSimpleName();
-    private ImageLoader imageLoader;
+    private FacebookImageLoader imageLoader;
     private List<Album> albumList = new ArrayList<Album>();
     private Context mContext;
     private IAlbumListAdapter albumListAdapterListener;
 
     public AlbumListAdapter(Context context, int textViewResourceId,
-            List<Album> albumList, IAlbumListAdapter albumListAdapter) {
+            List<Album> albumList, IAlbumListAdapter albumListAdapter, String accessToken) {
         super(context, textViewResourceId, albumList);
         this.mContext = context;
         this.albumList = albumList;
-        this.imageLoader = new ImageLoader(context);
+        this.imageLoader = new FacebookImageLoader(context, accessToken);
         this.albumListAdapterListener = albumListAdapter;
     }
 
@@ -65,7 +65,7 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         }
         ImageView imgAlbumCover = (ImageView) row.findViewById(R.id.imageView);
         final Album album = getItem(position);
-        imageLoader.displayImage(album.getAlbumCover(), imgAlbumCover);
+        imageLoader.displayImage(album.getAlbumPhotoID(), imgAlbumCover);
         imgAlbumCover.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -14,7 +14,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.lopefied.pepemon.db.model.Album;
 import com.lopefied.pepemon.service.AlbumService;
 import com.lopefied.pepemon.service.exception.NoAlbumExistsException;
-import com.lopefied.pepemon.util.FBUtil;
 
 /**
  * 
@@ -57,10 +56,11 @@ public class AlbumServiceImpl implements AlbumService {
                         album.setAlbumName(null);
                     }
 
-                    // GET THE ALBUM COVER PHOTO
+                    // GET THE ALB`UM COVER PHOTO
                     if (JOAlbums.has("cover_pid")) {
-                        album.setAlbumCover(FBUtil.extractImageURLFromPID(
-                                JOAlbums.getString("cover_pid"), accessToken));
+                        album.setAlbumPhotoID(JOAlbums.getString("cover_pid"));
+//                        album.setAlbumCover(FBUtil.extractImageURLFromPID(
+//                                JOAlbums.getString("cover_pid"), accessToken));
                     }
                     // GET THE ALBUM'S PHOTO COUNT
                     if (JOAlbums.has("photo_count")) {
