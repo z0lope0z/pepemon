@@ -15,6 +15,7 @@ import com.lopefied.pepemon.task.GetAlbumPhotosTask.IAlbumPhotosDownloader;
 
 public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
     public static final String TAG = AlbumPhotosProvider.class.getSimpleName();
+    private static final Integer LIMIT = 8;
 
     private PhotoService photoService;
     private ProgressDialog progressDialog;
@@ -30,20 +31,31 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
     }
 
     @Override
+    public void loadInit(AlbumPhotosListener albumPhotosListener, Album album) {
+        List<Photo> cacheList = photoService.getAlbumPhotos(album, LIMIT);
+        if (cacheList.size() > 0) {
+            albumPhotosListener.addNewPhotos(cacheList);
+        } else {
+            loadFromServer(albumPhotosListener, album, 0);
+        }
+    }
+
+    @Override
     public void loadMore(final AlbumPhotosListener albumPhotosListener,
-            Photo lastPhoto, Album album, Integer limit, Integer currentPage) {
+            Photo lastPhoto, Album album, Integer currentPage) {
         Photo lastPhotoCache = photoService.getLastPhoto(album);
         if (lastPhotoCache != null) {
             if (lastPhoto == null) {
-                albumPhotosListener.addNewPhotos(loadAllFromCache(album));
+                System.out.println("last photo was null");
+                loadInit(albumPhotosListener, album);
             } else if (!lastPhoto.equals(lastPhotoCache)) {
                 albumPhotosListener.addNewPhotos(loadFromCache(
-                        albumPhotosListener, lastPhoto, album, limit));
+                        albumPhotosListener, lastPhoto, album));
             } else {
-                loadFromServer(albumPhotosListener, album, limit, currentPage);
+                loadFromServer(albumPhotosListener, album, currentPage);
             }
         } else
-            loadFromServer(albumPhotosListener, album, limit, currentPage);
+            loadFromServer(albumPhotosListener, album, currentPage);
     }
 
     @Override
@@ -52,7 +64,7 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
     }
 
     private void loadFromServer(final AlbumPhotosListener albumPhotosListener,
-            final Album album, final Integer limit, final Integer currentPage) {
+            final Album album, final Integer currentPage) {
         Log.i(TAG, "Loading new photos from server.. ");
         IAlbumPhotosDownloader albumPhotosDownloader = new IAlbumPhotosDownloader() {
             @Override
@@ -81,10 +93,9 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
 
     private List<Photo> loadFromCache(
             final AlbumPhotosListener albumPhotosListener, Photo lastPhoto,
-            Album album, Integer limit) {
+            Album album) {
         Log.i(TAG, "Loading filtered photos from cache.. ");
         return photoService.getAlbumPhotos(album, PhotoService.BACKWARDS,
-                lastPhoto.getID(), limit);
+                lastPhoto.getID(), LIMIT);
     }
-
 }

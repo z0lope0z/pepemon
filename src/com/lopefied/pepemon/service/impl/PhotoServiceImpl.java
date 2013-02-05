@@ -87,6 +87,21 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
+    public List<Photo> getAlbumPhotos(Album album, Integer limit) {
+        try {
+            QueryBuilder<Photo, Integer> queryBuilder = photoDAO.queryBuilder();
+            queryBuilder.where().eq(Photo.ALBUM, album);
+            PreparedQuery<Photo> prepQuery = queryBuilder
+                    .orderBy(Photo.ID_PK, true).limit(Long.valueOf(limit))
+                    .prepare();
+            return photoDAO.query(prepQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Photo>();
+    }
+
+    @Override
     public List<Photo> getAlbumPhotos(Album album, int direction,
             Integer photoID, Integer limit) {
         List<Photo> result = new ArrayList<Photo>();
@@ -124,4 +139,5 @@ public class PhotoServiceImpl implements PhotoService {
         }
         return null;
     }
+
 }

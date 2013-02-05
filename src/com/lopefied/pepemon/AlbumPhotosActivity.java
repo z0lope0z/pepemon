@@ -2,7 +2,6 @@ package com.lopefied.pepemon;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import android.app.Activity;
@@ -41,7 +40,6 @@ import com.lopefied.pepemon.util.PepemonUtils;
 public class AlbumPhotosActivity extends Activity {
     public static final String TAG = AlbumPhotosActivity.class.getSimpleName();
     public static final String ALBUM_ID = "album_id";
-    public static final Integer PAGE_COUNT = 8;
 
     private SharedPreferences mPrefs;
     private ListView listView;
@@ -49,7 +47,6 @@ public class AlbumPhotosActivity extends Activity {
     private String albumID = null;
     private String accessToken = null;
     private ProgressDialog progressDialog;
-    private Boolean isDownloadingStuff = false;
     private PhotoListAdapter adapter;
 
     private AlbumPhotosProvider albumPhotosProvider;
@@ -119,16 +116,14 @@ public class AlbumPhotosActivity extends Activity {
                     final int lastItem = firstVisibleItem + visibleItemCount;
                     if ((lastItem >= totalItemCount - 2)
                             && (totalItemCount != 0)) {
-                        Photo photo = (Photo) listView.getAdapter().getItem(
+                        Photo lastPhoto = (Photo) listView.getAdapter().getItem(
                                 totalItemCount - 1);
-                        if (photo != null) {
-                            if (!isDownloadingStuff) {
-                                currentPage = currentPage
-                                        + (GetAlbumPhotosTask.PAGE_COUNT + 1);
-                                Photo lastPhoto = photo;
+                        if (lastPhoto != null) {
+                            if (!albumPhotosProvider.isDownloading()) {
+                                currentPage = totalItemCount;
                                 albumPhotosProvider.loadMore(
                                         albumPhotosListener, lastPhoto, album,
-                                        PAGE_COUNT, currentPage);
+                                        currentPage);
                                 Toast.makeText(getApplicationContext(),
                                         "Loading more items..",
                                         Toast.LENGTH_LONG).show();
@@ -169,7 +164,6 @@ public class AlbumPhotosActivity extends Activity {
                 Log.i(TAG, "Received photos : " + photoList.size());
                 if (photoList.size() > 0) {
                     loadPhotos(photoList);
-                    isDownloadingStuff = false;
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "No more photos to load", Toast.LENGTH_LONG).show();
@@ -182,8 +176,7 @@ public class AlbumPhotosActivity extends Activity {
             albumPhotosProvider = new AlbumPhotosProviderImpl(photoService,
                     progressDialog, accessToken);
             album = albumService.getAlbum(albumID);
-            albumPhotosProvider.loadMore(albumPhotosListener, null, album,
-                    PAGE_COUNT, currentPage);
+            albumPhotosProvider.loadInit(albumPhotosListener, album);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (NoAlbumExistsException e) {

@@ -28,6 +28,8 @@ public interface PhotoService {
 
     public List<Photo> getAlbumPhotos(Album album);
 
+    public List<Photo> getAlbumPhotos(Album album, Integer limit);
+
     public List<Photo> getAlbumPhotos(Album album, int direction,
             Integer photoID, Integer limit);
 }
