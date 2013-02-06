@@ -44,7 +44,7 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
     public void clear() {
         photoList.clear();
     }
-    
+
     public void clearImageCache() {
         imageLoader.clearCache();
     }
@@ -72,23 +72,31 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
+        ViewHolder holder;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.item_album, parent, false);
+            // View holder for smooth scrolling
+            holder = new ViewHolder();
+            holder.lblTitle = (TextView) row.findViewById(R.id.lblTitle);
+            holder.imgProductThumbnail = (ImageView) row
+                    .findViewById(R.id.imageView);
+            row.setTag(holder);
+        } else {
+            final Photo photo = getItem(position);
+            holder = (ViewHolder) row.getTag();
+            imageLoader.displayImage(photo.getPhotoURL(),
+                    holder.imgProductThumbnail);
+            holder.imgProductThumbnail
+                    .setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            photoListAdapterListener.selectPhoto(photo);
+                        }
+                    });
+            holder.lblTitle.setVisibility(View.GONE);
         }
-        ImageView imgProductThumbnail = (ImageView) row
-                .findViewById(R.id.imageView);
-        final Photo photo = getItem(position);
-        imageLoader.displayImage(photo.getPhotoURL(), imgProductThumbnail);
-        TextView lblTitle = (TextView) row.findViewById(R.id.lblTitle);
-        lblTitle.setVisibility(View.GONE);
-        imgProductThumbnail.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                photoListAdapterListener.selectPhoto(photo);
-            }
-        });
         return row;
     }
 
@@ -101,6 +109,11 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
         public String getFBToken();
 
         public void selectPhoto(Photo photo);
+    }
+
+    class ViewHolder {
+        public TextView lblTitle;
+        public ImageView imgProductThumbnail;
     }
 
 }

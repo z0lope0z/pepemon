@@ -30,25 +30,24 @@ public class FacebookImageLoader {
     public static final String TAG = FacebookImageLoader.class.getSimpleName();
     private final int stub_id = R.drawable.ic_blank_picture_inverse;
     private MemoryCache memoryCache = new MemoryCache();
-    private FileCache fileCache;
-    private String accessToken;
-
+    private static FileCache fileCache;
+    private static String accessToken;
     private Map<ImageView, String> imageViews = Collections
             .synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
     protected ProgressBar progressBar;
+    private static FacebookImageLoader INSTANCE = new FacebookImageLoader();
 
-    public FacebookImageLoader(Context context, String accessToken) {
-        fileCache = new FileCache(context);
+    private FacebookImageLoader() {
         executorService = Executors.newFixedThreadPool(5);
-        this.accessToken = accessToken;
     }
 
-    public FacebookImageLoader(Context context, ProgressBar progressBar,
+    public static FacebookImageLoader getInstance(Context context,
             String accessToken) {
-        this(context, accessToken);
-        this.progressBar = progressBar;
-        this.accessToken = accessToken;
+        if (fileCache == null)
+            fileCache = new FileCache(context);
+        FacebookImageLoader.accessToken = accessToken;
+        return INSTANCE;
     }
 
     public void displayImage(String photoID, ImageView imageView) {

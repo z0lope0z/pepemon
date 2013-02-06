@@ -32,7 +32,7 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         super(context, textViewResourceId, albumList);
         this.mContext = context;
         this.albumList = albumList;
-        this.imageLoader = new FacebookImageLoader(context, accessToken);
+        this.imageLoader = FacebookImageLoader.getInstance(context, accessToken);
         this.albumListAdapterListener = albumListAdapter;
     }
 
@@ -58,22 +58,28 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
+        ViewHolder holder;
         if (row == null) {
             LayoutInflater inflater = (LayoutInflater) this.getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.item_album, parent, false);
+            //View holder for smooth scrolling
+            holder = new ViewHolder();
+            holder.lblTitle = (TextView) row.findViewById(R.id.lblTitle);
+            holder.imgAlbumCover = (ImageView) row.findViewById(R.id.imageView);
+            row.setTag(holder);
+        } else {
+            final Album album = getItem(position);
+            holder = (ViewHolder) row.getTag();
+            imageLoader.displayImage(album.getAlbumPhotoID(), holder.imgAlbumCover);
+            holder.imgAlbumCover.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    albumListAdapterListener.selected(album);
+                }
+            });
+            holder.lblTitle.setText(album.getAlbumName());
         }
-        ImageView imgAlbumCover = (ImageView) row.findViewById(R.id.imageView);
-        final Album album = getItem(position);
-        imageLoader.displayImage(album.getAlbumPhotoID(), imgAlbumCover);
-        imgAlbumCover.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                albumListAdapterListener.selected(album);
-            }
-        });
-        TextView lblTitle = (TextView) row.findViewById(R.id.lblTitle);
-        lblTitle.setText(album.getAlbumName());
         return row;
     }
 
@@ -86,6 +92,11 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         public String getFBToken();
 
         public void selected(Album album);
+    }
+
+    class ViewHolder {
+        public TextView lblTitle;
+        public ImageView imgAlbumCover;
     }
 
 }

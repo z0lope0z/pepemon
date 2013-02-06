@@ -53,11 +53,9 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
             if (lastPhoto == null) {
                 loadInit(albumPhotosListener, album);
             } else if (!lastPhoto.equals(lastPhotoCache)) {
-                System.out.println("loading from cache..");
                 albumPhotosListener.addNewPhotos(loadFromCache(
                         albumPhotosListener, lastPhoto, album));
             } else {
-                System.out.println("----- condition was meeeet!!");
                 loadFromServer(albumPhotosListener, album, totalItems,
                         albumPhotosDownloader);
             }

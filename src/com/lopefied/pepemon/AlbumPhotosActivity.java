@@ -119,15 +119,13 @@ public class AlbumPhotosActivity extends Activity {
                                 .getItem(totalItemCount - 1);
                         if (lastPhoto != null) {
                             if (!albumPhotosProvider.isDownloading()) {
-                                 currentPage = totalItemCount;
-//                                currentPage = currentPage
-//                                        + (AlbumPhotosProviderImpl.LIMIT + 1);
+                                currentPage = totalItemCount;
                                 albumPhotosProvider.loadMore(
                                         albumPhotosListener, lastPhoto, album,
                                         currentPage);
                                 Toast.makeText(getApplicationContext(),
                                         "Loading more items..",
-                                        Toast.LENGTH_LONG).show();
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -197,8 +195,6 @@ public class AlbumPhotosActivity extends Activity {
     }
 
     private void loadPhotos(List<Photo> photoList) {
-//        List<Photo> combinedList = PepemonUtils.combineDTOList(
-//                adapter.getList(), photoList);
         adapter.addAll(photoList);
         adapter.notifyDataSetChanged();
     }
