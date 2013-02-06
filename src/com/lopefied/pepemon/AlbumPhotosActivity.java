@@ -29,7 +29,6 @@ import com.lopefied.pepemon.service.PhotoService;
 import com.lopefied.pepemon.service.exception.NoAlbumExistsException;
 import com.lopefied.pepemon.service.impl.AlbumServiceImpl;
 import com.lopefied.pepemon.service.impl.PhotoServiceImpl;
-import com.lopefied.pepemon.task.GetAlbumPhotosTask;
 import com.lopefied.pepemon.util.PepemonUtils;
 
 /**
@@ -116,11 +115,13 @@ public class AlbumPhotosActivity extends Activity {
                     final int lastItem = firstVisibleItem + visibleItemCount;
                     if ((lastItem >= totalItemCount - 2)
                             && (totalItemCount != 0)) {
-                        Photo lastPhoto = (Photo) listView.getAdapter().getItem(
-                                totalItemCount - 1);
+                        Photo lastPhoto = (Photo) listView.getAdapter()
+                                .getItem(totalItemCount - 1);
                         if (lastPhoto != null) {
                             if (!albumPhotosProvider.isDownloading()) {
-                                currentPage = totalItemCount;
+                                 currentPage = totalItemCount;
+//                                currentPage = currentPage
+//                                        + (AlbumPhotosProviderImpl.LIMIT + 1);
                                 albumPhotosProvider.loadMore(
                                         albumPhotosListener, lastPhoto, album,
                                         currentPage);
@@ -196,9 +197,9 @@ public class AlbumPhotosActivity extends Activity {
     }
 
     private void loadPhotos(List<Photo> photoList) {
-        List<Photo> combinedList = PepemonUtils.combineDTOList(
-                adapter.getList(), photoList);
-        adapter.set(combinedList);
+//        List<Photo> combinedList = PepemonUtils.combineDTOList(
+//                adapter.getList(), photoList);
+        adapter.addAll(photoList);
         adapter.notifyDataSetChanged();
     }
 

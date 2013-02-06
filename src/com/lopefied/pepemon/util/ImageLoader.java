@@ -28,21 +28,22 @@ import android.widget.ProgressBar;
 public class ImageLoader {
     private final int stub_id = R.drawable.ic_blank_picture_inverse;
     private MemoryCache memoryCache = new MemoryCache();
-    private FileCache fileCache;
+    private static FileCache fileCache;
 
     private Map<ImageView, String> imageViews = Collections
             .synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
     protected ProgressBar progressBar;
+    private static ImageLoader INSTANCE = new ImageLoader();
 
-    public ImageLoader(Context context) {
-        fileCache = new FileCache(context);
+    private ImageLoader() {
         executorService = Executors.newFixedThreadPool(5);
     }
 
-    public ImageLoader(Context context, ProgressBar progressBar) {
-        this(context);
-        this.progressBar = progressBar;
+    public static ImageLoader getInstance(Context context) {
+        if (fileCache == null)
+            fileCache = new FileCache(context);
+        return INSTANCE;
     }
 
     public void displayImage(String url, ImageView imageView) {
@@ -231,7 +232,6 @@ public class ImageLoader {
 
     public void clearCache() {
         memoryCache.clear();
-        fileCache.clear();
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.json.JSONException;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.util.Log;
 import com.facebook.android.Util;
 import com.lopefied.pepemon.db.model.Album;
 import com.lopefied.pepemon.db.model.Photo;
-import com.lopefied.pepemon.provider.AlbumPhotosListener;
 import com.lopefied.pepemon.service.PhotoService;
 import com.lopefied.pepemon.service.exception.NoPhotosExistException;
 
@@ -27,27 +25,23 @@ import com.lopefied.pepemon.service.exception.NoPhotosExistException;
 public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
     public static final String TAG = GetAlbumPhotosTask.class.getSimpleName();
     public static final Integer PAGE_COUNT = 8;
-    private ProgressDialog progressDialog;
     private IAlbumPhotosDownloader albumPhotosDownloader;
-    private AlbumPhotosListener albumPhotosListener;
     private String accessToken;
     private Integer page;
     private PhotoService photoService;
 
     public GetAlbumPhotosTask(PhotoService photoService,
-            IAlbumPhotosDownloader albumPhotosDownloader,
-            ProgressDialog progressDialog, String accessToken, Integer page) {
+            IAlbumPhotosDownloader albumPhotosDownloader, String accessToken,
+            Integer page) {
         this.photoService = photoService;
         this.albumPhotosDownloader = albumPhotosDownloader;
-        this.progressDialog = progressDialog;
         this.accessToken = accessToken;
         this.page = page;
     }
 
     @Override
     protected void onPreExecute() {
-        // SHOW THE PROGRESS BAR (SPINNER) WHILE LOADING ALBUMS
-        progressDialog.show();
+        albumPhotosDownloader.startingDownload();
     }
 
     private String createLimit() {
@@ -78,9 +72,8 @@ public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            photoService.processJSONArrayResponse(queryAlbumPhotos,
+            return photoService.processJSONArrayResponse(queryAlbumPhotos,
                     accessToken, album);
-            return photoService.getAlbumPhotos(album);
         } catch (NoPhotosExistException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -91,8 +84,6 @@ public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
 
     @Override
     protected void onPostExecute(List<Photo> albumPhotoList) {
-        // HIDE THE PROGRESS BAR (SPINNER) AFTER LOADING ALBUMS
-        progressDialog.hide();
         if (albumPhotoList.size() > 0)
             albumPhotosDownloader.foundAlbumPhotos(albumPhotoList);
         else
@@ -100,6 +91,8 @@ public class GetAlbumPhotosTask extends AsyncTask<Album, Void, List<Photo>> {
     }
 
     public interface IAlbumPhotosDownloader {
+        public void startingDownload();
+
         public void noMoreAlbumPhotos();
 
         public void foundAlbumPhotos(List<Photo> photoList);

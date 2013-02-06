@@ -32,7 +32,7 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
         super(context, textViewResourceId, photoList);
         this.mContext = context;
         this.photoList = photoList;
-        this.imageLoader = new ImageLoader(context);
+        this.imageLoader = ImageLoader.getInstance(context);
         this.photoListAdapterListener = photoListAdapterListener;
     }
 
@@ -43,6 +43,10 @@ public class PhotoListAdapter extends ArrayAdapter<Photo> {
     @Override
     public void clear() {
         photoList.clear();
+    }
+    
+    public void clearImageCache() {
+        imageLoader.clearCache();
     }
 
     public void addAll(Collection<? extends Photo> collection) {

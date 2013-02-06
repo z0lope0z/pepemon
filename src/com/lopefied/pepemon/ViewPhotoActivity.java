@@ -33,7 +33,7 @@ public class ViewPhotoActivity extends Activity {
             Log.i(TAG, "Got albumID : " + photoURL);
             if (photoURL != null) {
                 TouchImageView imageView = (TouchImageView) findViewById(R.id.imageView);
-                ImageLoader imageLoader = new ImageLoader(this);
+                ImageLoader imageLoader = ImageLoader.getInstance(this);
                 imageView.setImageBitmap(imageLoader.getBitmap(photoURL));
                 imageView.setMaxZoom(4f);
             }

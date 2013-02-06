@@ -103,20 +103,20 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public List<Photo> getAlbumPhotos(Album album, int direction,
-            Integer photoID, Integer limit) {
+            Photo photo, Integer limit) {
         List<Photo> result = new ArrayList<Photo>();
         try {
             QueryBuilder<Photo, Integer> queryBuilder = photoDAO.queryBuilder();
             if (direction == PhotoService.BACKWARDS)
-                queryBuilder.where().gt(Photo.ID_PK, photoID).and()
+                queryBuilder.where().gt(Photo.ID_PK, photo.getID()).and()
                         .eq(Photo.ALBUM, album);
             else if (direction == PhotoService.FORWARDS)
-                queryBuilder.where().lt(Photo.ID_PK, photoID).and()
+                queryBuilder.where().lt(Photo.ID_PK, photo.getID()).and()
                         .eq(Photo.ALBUM, album);
             else
                 throw new SQLException();
             PreparedQuery<Photo> prepQuery = queryBuilder
-                    .orderBy(Photo.PHOTO_ID, true).limit(new Long(limit))
+                    .orderBy(Photo.ID_PK, true).limit(new Long(limit))
                     .prepare();
             return photoDAO.query(prepQuery);
         } catch (SQLException e) {

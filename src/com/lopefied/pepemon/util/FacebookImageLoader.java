@@ -202,7 +202,6 @@ public class FacebookImageLoader {
 
     public void clearCache() {
         memoryCache.clear();
-        fileCache.clear();
     }
 
 }

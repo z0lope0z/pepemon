@@ -15,19 +15,21 @@ import com.lopefied.pepemon.task.GetAlbumPhotosTask.IAlbumPhotosDownloader;
 
 public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
     public static final String TAG = AlbumPhotosProvider.class.getSimpleName();
-    private static final Integer LIMIT = 8;
+    public static final Integer LIMIT = 8;
 
     private PhotoService photoService;
     private ProgressDialog progressDialog;
     private String accessToken;
-    private Boolean isDownloading;
+    private Integer pageCount;
+
+    private AlbumPhotosDownloader albumPhotosDownloader;
 
     public AlbumPhotosProviderImpl(PhotoService photoService,
             ProgressDialog progressDialog, String accessToken) {
         this.photoService = photoService;
         this.progressDialog = progressDialog;
         this.accessToken = accessToken;
-        this.isDownloading = false;
+        this.albumPhotosDownloader = new AlbumPhotosDownloader();
     }
 
     @Override
@@ -36,54 +38,52 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
         if (cacheList.size() > 0) {
             albumPhotosListener.addNewPhotos(cacheList);
         } else {
-            loadFromServer(albumPhotosListener, album, 0);
+            AlbumPhotosDownloader albumPhotosDownloader = new AlbumPhotosDownloader(
+                    albumPhotosListener, progressDialog);
+            loadFromServer(albumPhotosListener, album, 0, albumPhotosDownloader);
         }
     }
 
     @Override
     public void loadMore(final AlbumPhotosListener albumPhotosListener,
-            Photo lastPhoto, Album album, Integer currentPage) {
+            Photo lastPhoto, Album album, Integer totalItems) {
         Photo lastPhotoCache = photoService.getLastPhoto(album);
+        albumPhotosDownloader = new AlbumPhotosDownloader(albumPhotosListener);
         if (lastPhotoCache != null) {
             if (lastPhoto == null) {
-                System.out.println("last photo was null");
                 loadInit(albumPhotosListener, album);
             } else if (!lastPhoto.equals(lastPhotoCache)) {
+                System.out.println("loading from cache..");
                 albumPhotosListener.addNewPhotos(loadFromCache(
                         albumPhotosListener, lastPhoto, album));
             } else {
-                loadFromServer(albumPhotosListener, album, currentPage);
+                System.out.println("----- condition was meeeet!!");
+                loadFromServer(albumPhotosListener, album, totalItems,
+                        albumPhotosDownloader);
             }
         } else
-            loadFromServer(albumPhotosListener, album, currentPage);
+            loadFromServer(albumPhotosListener, album, totalItems,
+                    albumPhotosDownloader);
     }
 
     @Override
     public Boolean isDownloading() {
-        return isDownloading;
+        Log.i(TAG, "The downloader is currently : "
+                + albumPhotosDownloader.isDownloading);
+        return albumPhotosDownloader.isDownloading;
+    }
+
+    private void increasePageCount() {
+        pageCount = pageCount + LIMIT;
     }
 
     private void loadFromServer(final AlbumPhotosListener albumPhotosListener,
-            final Album album, final Integer currentPage) {
+            final Album album, final Integer currentPage,
+            AlbumPhotosDownloader albumPhotosDownloader) {
         Log.i(TAG, "Loading new photos from server.. ");
-        IAlbumPhotosDownloader albumPhotosDownloader = new IAlbumPhotosDownloader() {
-            @Override
-            public void noMoreAlbumPhotos() {
-                isDownloading = false;
-                albumPhotosListener.noMorePhotos();
-            }
-
-            @Override
-            public void foundAlbumPhotos(List<Photo> photoList) {
-                isDownloading = false;
-                albumPhotosListener.addNewPhotos(photoList);
-            }
-
-        };
         GetAlbumPhotosTask task = new GetAlbumPhotosTask(photoService,
-                albumPhotosDownloader, progressDialog, accessToken, currentPage);
+                albumPhotosDownloader, accessToken, currentPage);
         task.execute(album);
-        isDownloading = true;
     }
 
     private List<Photo> loadAllFromCache(Album album) {
@@ -96,6 +96,55 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
             Album album) {
         Log.i(TAG, "Loading filtered photos from cache.. ");
         return photoService.getAlbumPhotos(album, PhotoService.BACKWARDS,
-                lastPhoto.getID(), LIMIT);
+                lastPhoto, LIMIT);
+    }
+
+    private class AlbumPhotosDownloader implements IAlbumPhotosDownloader {
+        Boolean isDownloading;
+        AlbumPhotosListener albumPhotosListener;
+        ProgressDialog progressDialog;
+
+        public AlbumPhotosDownloader() {
+            this.isDownloading = false;
+        }
+
+        public AlbumPhotosDownloader(AlbumPhotosListener albumPhotosListener) {
+            this.isDownloading = false;
+            this.albumPhotosListener = albumPhotosListener;
+        }
+
+        public AlbumPhotosDownloader(AlbumPhotosListener albumPhotosListener,
+                ProgressDialog progressDialog) {
+            this.isDownloading = false;
+            this.albumPhotosListener = albumPhotosListener;
+            this.progressDialog = progressDialog;
+        }
+
+        @Override
+        public void startingDownload() {
+            this.isDownloading = true;
+            if (progressDialog != null) {
+                progressDialog.show();
+            }
+        }
+
+        @Override
+        public void noMoreAlbumPhotos() {
+            this.isDownloading = false;
+            albumPhotosListener.noMorePhotos();
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        }
+
+        @Override
+        public void foundAlbumPhotos(List<Photo> photoList) {
+            this.isDownloading = false;
+            albumPhotosListener.addNewPhotos(photoList);
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        }
+
     }
 }
