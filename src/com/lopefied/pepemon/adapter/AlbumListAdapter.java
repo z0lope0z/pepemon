@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +38,8 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
     }
 
     public void clearCache() {
+        System.gc();
+        Log.i(TAG, "Clearing cache");
         imageLoader.clearCache();
     }
 
@@ -94,7 +97,7 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         public void selected(Album album);
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         public TextView lblTitle;
         public ImageView imgAlbumCover;
     }

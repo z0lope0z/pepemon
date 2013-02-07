@@ -16,6 +16,8 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.ads.AdView;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.lopefied.pepemon.adapter.PhotoListAdapter;
 import com.lopefied.pepemon.adapter.PhotoListAdapter.IPhotoListAdapter;
 import com.lopefied.pepemon.db.DBHelper;
@@ -29,7 +31,6 @@ import com.lopefied.pepemon.service.PhotoService;
 import com.lopefied.pepemon.service.exception.NoAlbumExistsException;
 import com.lopefied.pepemon.service.impl.AlbumServiceImpl;
 import com.lopefied.pepemon.service.impl.PhotoServiceImpl;
-import com.lopefied.pepemon.util.PepemonUtils;
 
 /**
  * 
@@ -53,13 +54,35 @@ public class AlbumPhotosActivity extends Activity {
     private AlbumService albumService;
     private AlbumPhotosListener albumPhotosListener;
     private Album album;
+    private DBHelper dbHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.album_photos);
         init();
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adapter.clearCache();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbHelper != null) {
+            OpenHelperManager.releaseHelper();
+            dbHelper = null;
+        }
     }
 
     private void initExtras() {
@@ -135,7 +158,7 @@ public class AlbumPhotosActivity extends Activity {
     }
 
     private void initProviders() {
-        DBHelper dbHelper = new DBHelper(this);
+        dbHelper = (DBHelper) OpenHelperManager.getHelper(this, DBHelper.class);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Downloading photos..");
         progressDialog

@@ -22,6 +22,11 @@ public class PhotoServiceImpl implements PhotoService {
 
     public PhotoServiceImpl(Dao<Photo, Integer> photoDAO) {
         this.photoDAO = photoDAO;
+        try {
+            photoDAO.setObjectCache(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

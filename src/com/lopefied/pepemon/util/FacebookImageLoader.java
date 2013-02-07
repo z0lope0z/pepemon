@@ -83,11 +83,11 @@ public class FacebookImageLoader {
             return b;
 
         // from web
+        HttpURLConnection conn = null;
         try {
             Bitmap bitmap = null;
             URL imageUrl = new URL(getPhotoURL(photoID));
-            HttpURLConnection conn = (HttpURLConnection) imageUrl
-                    .openConnection();
+            conn = (HttpURLConnection) imageUrl.openConnection();
             conn.setConnectTimeout(30000);
             conn.setReadTimeout(30000);
             conn.setInstanceFollowRedirects(true);
@@ -100,6 +100,10 @@ public class FacebookImageLoader {
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
+        } finally {
+            System.out.println("-------disconnecting!!!");
+            if (conn != null)
+                conn.disconnect();
         }
     }
 

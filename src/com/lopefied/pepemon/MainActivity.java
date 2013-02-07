@@ -1,6 +1,7 @@
 package com.lopefied.pepemon;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -19,6 +20,7 @@ import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.lopefied.pepemon.adapter.AlbumListAdapter;
 import com.lopefied.pepemon.adapter.AlbumListAdapter.IAlbumListAdapter;
 import com.lopefied.pepemon.db.DBHelper;
@@ -42,6 +44,7 @@ public class MainActivity extends Activity {
     private ListView listView;
     private DBHelper dbHelper;
     private AlbumService albumService;
+    private AlbumListAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        dbHelper = new DBHelper(this);
+        dbHelper = (DBHelper) OpenHelperManager.getHelper(this, DBHelper.class);
         try {
             albumService = new AlbumServiceImpl(dbHelper.getAlbumDao());
         } catch (SQLException e) {
@@ -105,8 +108,49 @@ public class MainActivity extends Activity {
                 }
             });
         }
-        if (accessToken != null)
+        if (accessToken != null){
+            initAdapter(accessToken);
             loadAlbums(accessToken);
+        }
+    }
+
+    public void initAdapter(final String accessToken){
+        listView = (ListView) findViewById(R.id.listView);
+        IAlbumListAdapter albumListListener = new IAlbumListAdapter() {
+            @Override
+            public String getFBToken() {
+                return accessToken;
+            }
+
+            @Override
+            public void selected(Album album) {
+                launchAlbumPhotoList(album.getAlbumID());
+            }
+        };
+        adapter = new AlbumListAdapter(this,
+                R.layout.item_album, new ArrayList<Album>(), albumListListener, accessToken);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                    int position, long arg3) {
+                launchAlbumPhotoList(adapter.getItem(position).getAlbumID());
+            }
+        });
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        adapter.clearCache();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dbHelper != null) {
+            OpenHelperManager.releaseHelper();
+            dbHelper = null;
+        }
     }
 
     private void loadAlbums(String accessToken) {
@@ -149,28 +193,9 @@ public class MainActivity extends Activity {
 
     private void downloadAndDisplayPictures(List<Album> albumList,
             final String accessToken) {
-        listView = (ListView) findViewById(R.id.listView);
-        IAlbumListAdapter albumListListener = new IAlbumListAdapter() {
-            @Override
-            public String getFBToken() {
-                return accessToken;
-            }
-
-            @Override
-            public void selected(Album album) {
-                launchAlbumPhotoList(album.getAlbumID());
-            }
-        };
-        final AlbumListAdapter adapter = new AlbumListAdapter(this,
-                R.layout.item_album, albumList, albumListListener, accessToken);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                    int position, long arg3) {
-                launchAlbumPhotoList(adapter.getItem(position).getAlbumID());
-            }
-        });
+        adapter.clear();
+        adapter.clearCache();
+        adapter.addAll(albumList);
     }
 
     public void launchAlbumPhotoList(String albumID) {
