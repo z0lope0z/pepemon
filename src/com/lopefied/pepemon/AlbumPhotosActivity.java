@@ -40,6 +40,8 @@ public class AlbumPhotosActivity extends Activity {
     public static final String TAG = AlbumPhotosActivity.class.getSimpleName();
     public static final String ALBUM_ID = "album_id";
 
+    private static final int POSITION_TO_LOAD = 2;
+
     private SharedPreferences mPrefs;
     private ListView listView;
     private Integer currentPage = 0;
@@ -138,7 +140,7 @@ public class AlbumPhotosActivity extends Activity {
                 switch (listView.getId()) {
                 case R.id.listView:
                     final int lastItem = firstVisibleItem + visibleItemCount;
-                    if ((lastItem >= totalItemCount - 2)
+                    if ((lastItem >= totalItemCount - POSITION_TO_LOAD)
                             && (totalItemCount != 0)) {
                         Photo lastPhoto = (Photo) listView.getAdapter()
                                 .getItem(totalItemCount - 1);

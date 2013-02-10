@@ -29,6 +29,14 @@ public class ViewPhotoFragmentAdapter extends FragmentStatePagerAdapter {
         return fragment;
     }
 
+    public Photo getPhoto(int position) {
+        return photos.get(position);
+    }
+
+    public void addPhotos(List<Photo> photos) {
+        this.photos.addAll(photos);
+    }
+
     @Override
     public int getCount() {
         return photos.size();

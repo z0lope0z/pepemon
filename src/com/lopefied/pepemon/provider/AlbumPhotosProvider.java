@@ -7,7 +7,7 @@ public interface AlbumPhotosProvider {
     public void loadInit(AlbumPhotosListener albumPhotosListener, Album album);
 
     public void loadMore(AlbumPhotosListener albumPhotosListener,
-            Photo lastPhoto, Album albumID, Integer currentPage);
+            Photo lastPhoto, Album album, Integer currentPage);
 
     public Boolean isDownloading();
 }
