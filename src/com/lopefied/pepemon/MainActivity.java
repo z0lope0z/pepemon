@@ -197,6 +197,7 @@ public class MainActivity extends Activity {
         adapter.clear();
         adapter.clearCache();
         adapter.addAll(albumList);
+        adapter.notifyDataSetChanged();
     }
 
     public void launchAlbumPhotoList(String albumID) {

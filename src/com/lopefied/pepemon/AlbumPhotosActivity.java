@@ -22,6 +22,8 @@ import com.lopefied.pepemon.adapter.PhotoListAdapter.IPhotoListAdapter;
 import com.lopefied.pepemon.db.DBHelper;
 import com.lopefied.pepemon.db.model.Album;
 import com.lopefied.pepemon.db.model.Photo;
+import com.lopefied.pepemon.notifications.NotificationsManager;
+import com.lopefied.pepemon.notifications.ToastNotificationsManager;
 import com.lopefied.pepemon.provider.AlbumPhotosListener;
 import com.lopefied.pepemon.provider.AlbumPhotosProvider;
 import com.lopefied.pepemon.provider.impl.AlbumPhotosProviderImpl;
@@ -55,11 +57,13 @@ public class AlbumPhotosActivity extends Activity {
     private Album album;
     private DBHelper dbHelper;
 
+    private NotificationsManager notificationsManager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.album_photos);
+        setContentView(R.layout.main);
         init();
     }
 
@@ -149,9 +153,11 @@ public class AlbumPhotosActivity extends Activity {
                                 albumPhotosProvider.loadMore(
                                         albumPhotosListener, lastPhoto, album,
                                         currentPage);
-                                Toast.makeText(getApplicationContext(),
-                                        "Loading more items..",
-                                        Toast.LENGTH_SHORT).show();
+                                notificationsManager
+                                        .launchMessage("Loading more items..");
+                                System.out.println("displaying ? : "
+                                        + notificationsManager
+                                                .isCurrentlyDisplaying());
                             }
                         }
                     }
@@ -207,6 +213,8 @@ public class AlbumPhotosActivity extends Activity {
         } catch (NoAlbumExistsException e) {
             e.printStackTrace();
         }
+        notificationsManager = new ToastNotificationsManager(
+                getApplicationContext());
     }
 
     private void init() {
