@@ -16,7 +16,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.ads.AdView;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.lopefied.pepemon.adapter.PhotoListAdapter;
 import com.lopefied.pepemon.adapter.PhotoListAdapter.IPhotoListAdapter;
@@ -63,7 +62,7 @@ public class AlbumPhotosActivity extends Activity {
         setContentView(R.layout.album_photos);
         init();
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -114,9 +113,13 @@ public class AlbumPhotosActivity extends Activity {
             public void selectPhoto(Photo photo) {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(),
-                        ViewPhotoActivity.class);
-                intent.putExtra(ViewPhotoActivity.PHOTO_URL,
+                        ViewPhotoFragmentActivity.class);
+                intent.putExtra(ViewPhotoFragmentActivity.PHOTO_URL,
                         photo.getPhotoURL());
+                intent.putExtra(ViewPhotoFragmentActivity.ALBUM_ID,
+                        albumID);
+                intent.putExtra(ViewPhotoFragmentActivity.CURRENT_PHOTO_ID,
+                        photo.getID());
                 startActivity(intent);
             }
         };

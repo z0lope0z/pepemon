@@ -89,7 +89,6 @@ public class MainActivity extends Activity {
                     editor.putLong("access_expires",
                             facebook.getAccessExpires());
                     editor.commit();
-                    loadAlbums(facebook.getAccessToken());
                 }
 
                 @Override
@@ -108,13 +107,13 @@ public class MainActivity extends Activity {
                 }
             });
         }
-        if (accessToken != null){
+        if (accessToken != null) {
             initAdapter(accessToken);
             loadAlbums(accessToken);
         }
     }
 
-    public void initAdapter(final String accessToken){
+    public void initAdapter(final String accessToken) {
         listView = (ListView) findViewById(R.id.listView);
         IAlbumListAdapter albumListListener = new IAlbumListAdapter() {
             @Override
@@ -127,8 +126,8 @@ public class MainActivity extends Activity {
                 launchAlbumPhotoList(album.getAlbumID());
             }
         };
-        adapter = new AlbumListAdapter(this,
-                R.layout.item_album, new ArrayList<Album>(), albumListListener, accessToken);
+        adapter = new AlbumListAdapter(this, R.layout.item_album,
+                new ArrayList<Album>(), albumListListener, accessToken);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -138,12 +137,14 @@ public class MainActivity extends Activity {
             }
         });
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
-        adapter.clearCache();
+        if (adapter != null)
+            adapter.clearCache();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
