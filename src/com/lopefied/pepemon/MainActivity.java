@@ -9,13 +9,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
@@ -36,8 +37,9 @@ import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
  * 
  */
 public class MainActivity extends Activity {
-    Facebook facebook = new Facebook("195085947295131");
-    AsyncFacebookRunner mAsyncRunner = new AsyncFacebookRunner(facebook);
+    public static final String TAG = MainActivity.class.getSimpleName();
+
+    private Facebook facebook = new Facebook("195085947295131");
     private static final String FACEBOOK_ID = "pepemon3";
 
     private SharedPreferences mPrefs;
@@ -86,11 +88,16 @@ public class MainActivity extends Activity {
                     editor.putLong("access_expires",
                             facebook.getAccessExpires());
                     editor.commit();
+                    initAdapter(facebook.getAccessToken());
+                    loadAlbums(facebook.getAccessToken());
                 }
 
                 @Override
                 public void onFacebookError(FacebookError error) {
-                    System.out.println("onFBError");
+                    Log.e(TAG, "onFBError");
+                    Toast.makeText(getApplicationContext(),
+                            "A facebook-related error occured",
+                            Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -100,7 +107,11 @@ public class MainActivity extends Activity {
 
                 @Override
                 public void onCancel() {
-                    System.out.println("onCancel");
+                    Log.e(TAG, "onCancel");
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "You must login to facebook to be able to download photos",
+                            Toast.LENGTH_LONG).show();
                 }
             });
         }
