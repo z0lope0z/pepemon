@@ -20,15 +20,18 @@ public class ViewPhotoFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = new PhotoFragment();
-        Bundle args = new Bundle();
-        args.putString(PhotoFragment.ARG_IMAGE_URL, photos.get(i).getPhotoURL());
-        fragment.setArguments(args);
+        if (i < getCount()) {
+            Bundle args = new Bundle();
+            args.putString(PhotoFragment.ARG_IMAGE_URL, photos.get(i)
+                    .getPhotoURL());
+            fragment.setArguments(args);
+        }
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return 100;
+        return photos.size();
     }
 
 }

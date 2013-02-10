@@ -21,13 +21,7 @@ public class PhotoFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.view_photo, container, false);
         Bundle args = getArguments();
         String imageURL = args.getString(ARG_IMAGE_URL);
-        // ((TextView)
-        // rootView.findViewById(android.R.id.text1)).setText(Integer
-        // .toString(args.getInt(ARG_OBJECT)));
         imageLoader = ImageLoader.getInstance(getActivity().getApplicationContext());
-//        ((ImageView) rootView.findViewById(R.id.imageView))
-//        .setImageDrawable(getResources().getDrawable(
-//                R.drawable.ic_launcher));
         TouchImageView imageView = ((TouchImageView) rootView.findViewById(R.id.imageView));
         imageView.setImageBitmap(imageLoader.getBitmap(imageURL));
         imageView.setMaxZoom(4f);
