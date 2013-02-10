@@ -74,7 +74,6 @@ public class FacebookImageLoader {
     }
 
     public Bitmap getBitmap(String photoID) {
-        System.out.println("Downloading image with photoID : " + photoID);
         File f = fileCache.getFile(photoID);
 
         // from SD cache
@@ -101,7 +100,6 @@ public class FacebookImageLoader {
             ex.printStackTrace();
             return null;
         } finally {
-            System.out.println("-------disconnecting!!!");
             if (conn != null)
                 conn.disconnect();
         }

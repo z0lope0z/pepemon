@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import android.util.Log;
+
 import com.lopefied.pepemon.db.model.Photo;
 
 /**
@@ -14,6 +16,7 @@ import com.lopefied.pepemon.db.model.Photo;
  * 
  */
 public class PepemonUtils {
+    public static final String TAG = PepemonUtils.class.getSimpleName();
 
     public static List<Photo> combineDTOList(List<Photo> oldList,
             List<Photo> newList) {
@@ -23,10 +26,9 @@ public class PepemonUtils {
         for (Iterator<Photo> iter = newList.iterator(); iter.hasNext();) {
             Photo element = iter.next();
             if (set.add((Photo) element)) {
-                System.out.println("adding : " + element.getPhotoID());
                 updatedList.add((Photo) element);
             } else {
-                System.out.println("found duplicate : " + element.getPhotoID());
+                Log.w(TAG, "found duplicate : " + element.getPhotoID());
             }
         }
         return updatedList;

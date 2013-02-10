@@ -65,7 +65,6 @@ public class MainActivity extends Activity {
         mPrefs = this.getSharedPreferences("com.lopefied.pepemon",
                 MODE_WORLD_READABLE);
         String accessToken = mPrefs.getString("access_token", null);
-        System.out.println("Access token : " + accessToken);
         long expires = mPrefs.getLong("access_expires", 0);
         if (accessToken != null) {
             facebook.setAccessToken(accessToken);
@@ -82,8 +81,6 @@ public class MainActivity extends Activity {
             facebook.authorize(this, new String[] {}, new DialogListener() {
                 @Override
                 public void onComplete(Bundle values) {
-                    System.out.println("Return access token : "
-                            + facebook.getAccessToken());
                     SharedPreferences.Editor editor = mPrefs.edit();
                     editor.putString("access_token", facebook.getAccessToken());
                     editor.putLong("access_expires",

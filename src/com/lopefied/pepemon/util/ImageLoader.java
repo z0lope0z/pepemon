@@ -20,12 +20,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 
 public class ImageLoader {
+    public static final String TAG = ImageLoader.class.getSimpleName();
     private final int stub_id = R.drawable.ic_blank_picture_inverse;
     private MemoryCache memoryCache = new MemoryCache();
     private static FileCache fileCache;
@@ -36,13 +38,18 @@ public class ImageLoader {
     protected ProgressBar progressBar;
     private static ImageLoader INSTANCE = new ImageLoader();
 
+    private static ImageView.ScaleType DEFAULT_SCALE_TYPE = ScaleType.CENTER_CROP;
+    private ImageView.ScaleType mScaleType;
+
     private ImageLoader() {
         executorService = Executors.newFixedThreadPool(5);
     }
 
     public static ImageLoader getInstance(Context context) {
-        if (fileCache == null)
+        if (fileCache == null) {
+            Log.i(TAG, "Filecache was null");
             fileCache = new FileCache(context);
+        }
         return INSTANCE;
     }
 
@@ -51,6 +58,20 @@ public class ImageLoader {
         Bitmap bitmap = memoryCache.get(url);
         if (bitmap != null) {
             imageView.setScaleType(ScaleType.CENTER_CROP);
+            imageView.setImageBitmap(bitmap);
+        } else {
+            queuePhoto(url, imageView);
+            imageView.setScaleType(ScaleType.CENTER_INSIDE);
+            imageView.setImageResource(stub_id);
+        }
+    }
+
+    public void displayImage(String url, ImageView imageView,
+            ImageView.ScaleType scaleType) {
+        imageViews.put(imageView, url);
+        Bitmap bitmap = memoryCache.get(url);
+        this.mScaleType = scaleType;
+        if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
         } else {
             queuePhoto(url, imageView);
@@ -76,7 +97,6 @@ public class ImageLoader {
     }
 
     public Bitmap getBitmap(String url) {
-        System.out.println("Downloading image from url : " + url);
         File f = fileCache.getFile(url);
 
         // from SD cache
@@ -103,7 +123,6 @@ public class ImageLoader {
             ex.printStackTrace();
             return null;
         } finally {
-            System.out.println("------- disconnecting!!!!");
             if (conn != null)
                 conn.disconnect();
         }
@@ -193,7 +212,10 @@ public class ImageLoader {
             if (bitmap != null) {
                 photoToLoad.imageView.setVisibility(View.VISIBLE);
                 photoToLoad.imageView.setImageBitmap(bitmap);
-                photoToLoad.imageView.setScaleType(ScaleType.CENTER_CROP);
+                if (mScaleType != null)
+                    photoToLoad.imageView.setScaleType(mScaleType);
+                else
+                    photoToLoad.imageView.setScaleType(DEFAULT_SCALE_TYPE);
             } else {
                 photoToLoad.imageView.setVisibility(View.VISIBLE);
                 photoToLoad.imageView.setImageResource(stub_id);

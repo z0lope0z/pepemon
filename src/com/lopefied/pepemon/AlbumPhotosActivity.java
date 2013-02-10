@@ -173,13 +173,13 @@ public class AlbumPhotosActivity extends Activity {
             public void noMorePhotos() {
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), "No more photos",
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void error(String message) {
                 Toast.makeText(getApplicationContext(), message,
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -189,14 +189,14 @@ public class AlbumPhotosActivity extends Activity {
                     loadPhotos(photoList);
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "No more photos to load", Toast.LENGTH_LONG).show();
+                            "No more photos to load", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void startingDownload() {
                 Toast.makeText(getApplicationContext(),
-                        "Loading more photos..", Toast.LENGTH_LONG).show();
+                        "Loading more photos..", Toast.LENGTH_SHORT).show();
             }
         };
         try {
