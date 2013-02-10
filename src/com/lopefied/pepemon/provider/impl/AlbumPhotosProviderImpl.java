@@ -121,6 +121,7 @@ public class AlbumPhotosProviderImpl implements AlbumPhotosProvider {
         @Override
         public void startingDownload() {
             this.isDownloading = true;
+            albumPhotosListener.startingDownload();
             if (progressDialog != null) {
                 progressDialog.show();
             }

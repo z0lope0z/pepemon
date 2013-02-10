@@ -195,7 +195,6 @@ public class MainActivity extends Activity {
     private void downloadAndDisplayPictures(List<Album> albumList,
             final String accessToken) {
         adapter.clear();
-        adapter.clearCache();
         adapter.addAll(albumList);
         adapter.notifyDataSetChanged();
     }
