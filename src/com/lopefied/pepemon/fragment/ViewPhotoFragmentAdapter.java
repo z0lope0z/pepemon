@@ -21,7 +21,6 @@ public class ViewPhotoFragmentAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         Fragment fragment = new PhotoFragment();
         Bundle args = new Bundle();
-        // Our object is just an integer :-P
         args.putString(PhotoFragment.ARG_IMAGE_URL, photos.get(i).getPhotoURL());
         fragment.setArguments(args);
         return fragment;
@@ -32,8 +31,4 @@ public class ViewPhotoFragmentAdapter extends FragmentStatePagerAdapter {
         return 100;
     }
 
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return "URL " + photos.get(position);
-    }
 }
