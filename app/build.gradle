@@ -1,0 +1,26 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.3"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:+'
+    compile files('libs/ormlite-android-4.42.jar')
+    compile files('libs/ormlite-core-4.42.jar')
+    compile files('libs/GoogleAdMobAdsSdk-6.2.1.jar')
+    compile files('libs/facebook.jar')
+}
