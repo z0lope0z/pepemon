@@ -1,9 +1,5 @@
 package com.lopefied.pepemon;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,9 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -26,15 +22,18 @@ import com.lopefied.pepemon.adapter.AlbumListAdapter;
 import com.lopefied.pepemon.adapter.AlbumListAdapter.IAlbumListAdapter;
 import com.lopefied.pepemon.db.DBHelper;
 import com.lopefied.pepemon.db.model.Album;
+import com.lopefied.pepemon.playstore.License;
 import com.lopefied.pepemon.service.AlbumService;
 import com.lopefied.pepemon.service.impl.AlbumServiceImpl;
 import com.lopefied.pepemon.task.GetAlbumsFQLTask;
 import com.lopefied.pepemon.task.GetAlbumsTask.IAlbumDownloader;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *
  * @author Lope Chupijay Emano
- *
  */
 public class MainActivity extends Activity {
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -52,73 +51,74 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-        dbHelper = (DBHelper) OpenHelperManager.getHelper(this, DBHelper.class);
-        try {
-            albumService = new AlbumServiceImpl(dbHelper.getAlbumDao());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        /*
-         * Get existing access_token if any
-         */
-        mPrefs = this.getSharedPreferences("com.lopefied.pepemon",
-                MODE_WORLD_READABLE);
-        String accessToken = mPrefs.getString("access_token", null);
-        long expires = mPrefs.getLong("access_expires", 0);
-        if (accessToken != null) {
-            facebook.setAccessToken(accessToken);
-        }
-        if (expires != 0) {
-            facebook.setAccessExpires(expires);
-        }
-
-        /*
-         * Only call authorize if the access_token has expired.
-         */
-        if (!facebook.isSessionValid()) {
-
-            facebook.authorize(this, new String[] {}, new DialogListener() {
-                @Override
-                public void onComplete(Bundle values) {
-                    SharedPreferences.Editor editor = mPrefs.edit();
-                    editor.putString("access_token", facebook.getAccessToken());
-                    editor.putLong("access_expires",
-                            facebook.getAccessExpires());
-                    editor.commit();
-                    initAdapter(facebook.getAccessToken());
-                    loadAlbums(facebook.getAccessToken());
-                }
-
-                @Override
-                public void onFacebookError(FacebookError error) {
-                    Log.e(TAG, "onFBError");
-                    Toast.makeText(getApplicationContext(),
-                            "A facebook-related error occured",
-                            Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onError(DialogError e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.e(TAG, "onCancel");
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "You must login to facebook to be able to download photos",
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        if (accessToken != null) {
-            initAdapter(accessToken);
-            loadAlbums(accessToken);
-        }
+        License.check(this);
+//        setContentView(R.layout.main);
+//
+//        dbHelper = (DBHelper) OpenHelperManager.getHelper(this, DBHelper.class);
+//        try {
+//            albumService = new AlbumServiceImpl(dbHelper.getAlbumDao());
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        /*
+//         * Get existing access_token if any
+//         */
+//        mPrefs = this.getSharedPreferences("com.lopefied.pepemon",
+//                MODE_WORLD_READABLE);
+//        String accessToken = mPrefs.getString("access_token", null);
+//        long expires = mPrefs.getLong("access_expires", 0);
+//        if (accessToken != null) {
+//            facebook.setAccessToken(accessToken);
+//        }
+//        if (expires != 0) {
+//            facebook.setAccessExpires(expires);
+//        }
+//
+//        /*
+//         * Only call authorize if the access_token has expired.
+//         */
+//        if (!facebook.isSessionValid()) {
+//
+//            facebook.authorize(this, new String[]{}, new DialogListener() {
+//                @Override
+//                public void onComplete(Bundle values) {
+//                    SharedPreferences.Editor editor = mPrefs.edit();
+//                    editor.putString("access_token", facebook.getAccessToken());
+//                    editor.putLong("access_expires",
+//                            facebook.getAccessExpires());
+//                    editor.commit();
+//                    initAdapter(facebook.getAccessToken());
+//                    loadAlbums(facebook.getAccessToken());
+//                }
+//
+//                @Override
+//                public void onFacebookError(FacebookError error) {
+//                    Log.e(TAG, "onFBError");
+//                    Toast.makeText(getApplicationContext(),
+//                            "A facebook-related error occured",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//
+//                @Override
+//                public void onError(DialogError e) {
+//                    e.printStackTrace();
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//                    Log.e(TAG, "onCancel");
+//                    Toast.makeText(
+//                            getApplicationContext(),
+//                            "You must login to facebook to be able to download photos",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }
+//        if (accessToken != null) {
+//            initAdapter(accessToken);
+//            loadAlbums(accessToken);
+//        }
     }
 
     public void initAdapter(final String accessToken) {
@@ -140,7 +140,7 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1,
-                    int position, long arg3) {
+                                    int position, long arg3) {
                 launchAlbumPhotoList(adapter.getItem(position).getAlbumID());
             }
         });
@@ -202,7 +202,7 @@ public class MainActivity extends Activity {
     }
 
     private void downloadAndDisplayPictures(List<Album> albumList,
-            final String accessToken) {
+                                            final String accessToken) {
         adapter.clear();
         adapter.addAll(albumList);
         adapter.notifyDataSetChanged();

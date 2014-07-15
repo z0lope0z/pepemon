@@ -60,6 +60,23 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <line_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/playstore/License.java" line="23" class="com.lopefied.pepemon.playstore.LicenseListener" package="com.lopefied.pepemon.playstore">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -69,24 +86,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AlbumPhotosActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/AlbumPhotosActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="38" selection-start="2259" selection-end="2259" vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="3726">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Album.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/db/model/Album.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="13" selection-start="227" selection-end="227" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1656">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DBHelper.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/db/DBHelper.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -109,7 +108,9 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/fragment/ViewPhotoFragmentAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="36" column="35" selection-start="1050" selection-end="1050" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="774">
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -117,24 +118,38 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="205" column="24" selection-start="7039" selection-end="7039" vertical-scroll-proportion="0.0" vertical-offset="3242" max-vertical-offset="4140">
+            <state line="44" column="30" selection-start="1576" selection-end="1576" vertical-scroll-proportion="0.0" vertical-offset="686" max-vertical-offset="4140">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4544#4545#0" expanded="true" />
-                <element signature="e#4594#4595#0" expanded="true" />
-                <element signature="e#4967#5233#0" expanded="true" />
-                <element signature="e#5222#5223#0" expanded="true" />
-                <element signature="e#6220#6221#0" expanded="true" />
-                <element signature="e#6270#6271#0" expanded="true" />
+                <element signature="e#4747#4748#0" expanded="true" />
+                <element signature="e#4797#4798#0" expanded="true" />
+                <element signature="e#5170#5452#0" expanded="true" />
+                <element signature="e#5441#5442#0" expanded="true" />
+                <element signature="e#6439#6440#0" expanded="true" />
+                <element signature="e#6489#6490#0" expanded="true" />
+                <marker date="1405399552031" expanded="true" signature="2914:4349" placeholder="{...}" />
+                <marker date="1405399552031" expanded="true" signature="3000:3452" placeholder="{...}" />
+                <marker date="1405399552031" expanded="true" signature="3551:3804" placeholder="{...}" />
+                <marker date="1405399552031" expanded="true" signature="3889:3953" placeholder="{...}" />
+                <marker date="1405399552031" expanded="true" signature="4026:4333" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="License.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="14" selection-start="364" selection-end="364" vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="576">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="License.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/playstore/License.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="0" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="1188">
+            <state line="27" column="20" selection-start="903" selection-end="903" vertical-scroll-proportion="0.4909091" vertical-offset="216" max-vertical-offset="1188">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -142,28 +157,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="local.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/local.properties">
+      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="0" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
+            <state line="15" column="0" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewPhotoFragmentActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/ViewPhotoFragmentActivity.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="13" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2574">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewPhotoActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/ViewPhotoActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="15" column="13" selection-start="299" selection-end="299" vertical-scroll-proportion="0.1804009" vertical-offset="0" max-vertical-offset="898">
+            <state line="18" column="41" selection-start="736" selection-end="736" vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="774">
               <folding />
             </state>
           </provider>
@@ -833,8 +839,8 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/local.properties" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/playstore/License.java" />
       </list>
@@ -842,9 +848,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1" />
-    <option name="y" value="39" />
-    <option name="width" value="1918" />
-    <option name="height" value="1040" />
+    <option name="y" value="19" />
+    <option name="width" value="1920" />
+    <option name="height" value="1062" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1004,6 +1010,8 @@
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="0089e14b9a50b4b8" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus5" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -1141,7 +1149,7 @@
       <option name="DEPLOY" value="true" />
       <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="true" />
       <option name="PREFERRED_AVD" value="" />
       <option name="USE_COMMAND_LINE" value="true" />
       <option name="COMMAND_LINE" value="" />
@@ -1152,6 +1160,8 @@
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
     </configuration>
     <list size="1">
@@ -1175,7 +1185,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="39" width="1918" height="1040" extended-state="1" />
+    <frame x="1" y="19" width="1920" height="1062" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1183,7 +1193,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3907075" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -1197,7 +1207,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2153518" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21512248" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -1245,13 +1255,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="898">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="0" selection-start="15" selection-end="15" vertical-scroll-proportion="-0.72" vertical-offset="0" max-vertical-offset="126">
@@ -1262,13 +1265,6 @@
     <entry file="file://$PROJECT_DIR$/import-summary.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="67" selection-start="830" selection-end="830" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1080">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="1" selection-start="348" selection-end="348" vertical-scroll-proportion="0.34075725" vertical-offset="0" max-vertical-offset="898">
           <folding />
         </state>
       </provider>
@@ -1301,46 +1297,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/fragment/ViewPhotoFragmentAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="35" selection-start="1050" selection-end="1050" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="774">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="205" column="24" selection-start="7039" selection-end="7039" vertical-scroll-proportion="0.0" vertical-offset="3242" max-vertical-offset="4140">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4544#4545#0" expanded="true" />
-            <element signature="e#4594#4595#0" expanded="true" />
-            <element signature="e#4967#5233#0" expanded="true" />
-            <element signature="e#5222#5223#0" expanded="true" />
-            <element signature="e#6220#6221#0" expanded="true" />
-            <element signature="e#6270#6271#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/playstore/License.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="0" selection-start="1892" selection-end="1892" vertical-scroll-proportion="0.0" vertical-offset="290" max-vertical-offset="1188">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="11" selection-start="1396" selection-end="1396" vertical-scroll-proportion="0.7216036" vertical-offset="0" max-vertical-offset="898">
-          <folding>
-            <element signature="e#603#621#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/gradle.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="39" selection-start="422" selection-end="422" vertical-scroll-proportion="0.24053451" vertical-offset="0" max-vertical-offset="898">
@@ -1348,24 +1304,90 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/local.properties">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/ViewPhotoActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="0" selection-start="260" selection-end="260" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
+        <state line="31" column="51" selection-start="894" selection-end="894" vertical-scroll-proportion="0.5011136" vertical-offset="0" max-vertical-offset="898">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/ViewPhotoFragmentActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="13" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2574">
+        <state line="92" column="9" selection-start="3707" selection-end="3707" vertical-scroll-proportion="0.38084632" vertical-offset="864" max-vertical-offset="2574">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/ViewPhotoActivity.java">
+    <entry file="file://$PROJECT_DIR$/local.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="13" selection-start="299" selection-end="299" vertical-scroll-proportion="0.1804009" vertical-offset="0" max-vertical-offset="898">
+        <state line="7" column="0" selection-start="260" selection-end="260" vertical-scroll-proportion="0.1403118" vertical-offset="0" max-vertical-offset="898">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="0" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="41" selection-start="736" selection-end="736" vertical-scroll-proportion="0.0" vertical-offset="12" max-vertical-offset="774">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/fragment/ViewPhotoFragmentAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="35" selection-start="1050" selection-end="1050" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="774">
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="30" selection-start="1576" selection-end="1576" vertical-scroll-proportion="0.0" vertical-offset="686" max-vertical-offset="4140">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4747#4748#0" expanded="true" />
+            <element signature="e#4797#4798#0" expanded="true" />
+            <element signature="e#5170#5452#0" expanded="true" />
+            <element signature="e#5441#5442#0" expanded="true" />
+            <element signature="e#6439#6440#0" expanded="true" />
+            <element signature="e#6489#6490#0" expanded="true" />
+            <marker date="1405399552031" expanded="true" signature="2914:4349" placeholder="{...}" />
+            <marker date="1405399552031" expanded="true" signature="3000:3452" placeholder="{...}" />
+            <marker date="1405399552031" expanded="true" signature="3551:3804" placeholder="{...}" />
+            <marker date="1405399552031" expanded="true" signature="3889:3953" placeholder="{...}" />
+            <marker date="1405399552031" expanded="true" signature="4026:4333" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="14" selection-start="364" selection-end="364" vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="576">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/os/Binder.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="58" selection-start="625" selection-end="625" vertical-scroll-proportion="0.5890909" vertical-offset="0" max-vertical-offset="954">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/lopefied/pepemon/playstore/License.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="20" selection-start="903" selection-end="903" vertical-scroll-proportion="0.4909091" vertical-offset="216" max-vertical-offset="1188">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

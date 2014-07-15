@@ -34,16 +34,16 @@ class LicenseListener extends android.os.Binder {
 }
 
 public class License {
-    static final String SERVICE = "com.android.vending.licensing.ILicensingService";
+    public static final String SERVICE = "com.android.vending.licensing.ILicensingService";
 
-    static void check(final Context context) {
+    public static void check(final Context context) {
         context.bindService(
                 new Intent(SERVICE),
                 new ServiceConnection() {
                     public void onServiceConnected(ComponentName name, IBinder binder) {
                         Parcel d = Parcel.obtain();
                         try {
-                            d.writeInterfaceToken("LICENSING_SERVICE");
+                            d.writeInterfaceToken("com.android.vending.licensing.ILicensingService");
                             d.writeLong(0);
                             d.writeString(context.getPackageName());
                             d.writeStrongBinder(new LicenseListener());
